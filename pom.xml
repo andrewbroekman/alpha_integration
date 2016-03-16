@@ -28,15 +28,27 @@
             </roles>
             <timezone>Africa/Johannesburg</timezone>
         </developer>
-	   <developer>
-		<id>14032644</id>
-		<name>Brenton Watt</name>
-		<email>u14032644@tuks.co.za</email>
-		<roles>
-			<role> Alpha Integration Member </role>
-		<roles>
-		<timezone>Africa/Johannesburg</timezone>
-	   </developer>
+		<developer>
+			<id>14032644</id>
+			<name>Brenton Watt</name>
+			<email>u14032644@tuks.co.za</email>
+			<roles>
+				<role>Alpha Integration Member</role>
+			<roles>
+			<timezone>Africa/Johannesburg</timezone>
+		</developer>
+
+		<developer>
+			<id>14040426</id>
+			<name>Fabio Loreggian</name>
+			<email>u14040426@tuks.co.za</email>
+			<roles>
+				<role>Alpha Integration Member</role>
+				<role>Alpha Web Team Leader</role>
+				<role>Developer</role>
+			<roles>
+			<timezone>Africa/Johannesburg</timezone>
+		</developer>
     </developers>
 
     <!-- Prerequisites required Maven -->
