@@ -34,7 +34,7 @@
 			<email>u14032644@tuks.co.za</email>
 			<roles>
 				<role>Alpha Integration Member</role>
-			<roles>
+			</roles>
 			<timezone>Africa/Johannesburg</timezone>
 		</developer>
 
@@ -46,7 +46,7 @@
 				<role>Alpha Integration Member</role>
 				<role>Alpha Web Team Leader</role>
 				<role>Developer</role>
-			<roles>
+			</roles>
 			<timezone>Africa/Johannesburg</timezone>
 		</developer>
     </developers>
