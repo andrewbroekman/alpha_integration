@@ -49,6 +49,18 @@
 			</roles>
 			<timezone>Africa/Johannesburg</timezone>
 		</developer>
+		
+		<developer>
+			<id>14188377</id>
+			<name>Rohan Hemansu Chhipa</name>
+			<email>u14188377@tuks.co.za</email>
+			<roles>
+				<role>Alpha Integration Member</role>
+				<role>Alpha Reporting Team Leader</role>
+				<role>Developer</role>
+			</roles>
+			<timezone>Africa/Johannesburg</timezone>
+		</developer>
     </developers>
 
     <!-- Prerequisites required Maven -->
