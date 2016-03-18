@@ -2,8 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <artifactId>parent</artifactId>
+        <groupId>com.codinginfinity.research</groupId>
+        <version>1.0</version>
+    </parent>
+
     <!-- Basic project settings -->
-    <groupId>com.codinginfinity.cos301mini</groupId>
+    <groupId>com.codinginfinity.research</groupId>
     <artifactId>integration</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -28,120 +34,62 @@
             </roles>
             <timezone>Africa/Johannesburg</timezone>
         </developer>
-	<developer>
-		<id>14032644</id>
-		<name>Brenton Watt</name>
-		<email>u14032644@tuks.co.za</email>
-		<roles>
-			<role>Alpha Integration Member</role>
-		</roles>
-		<timezone>Africa/Johannesburg</timezone>
-	</developer>
-	<developer>
-		<id>14040426</id>
-		<name>Fabio Loreggian</name>
-		<email>u14040426@tuks.co.za</email>
-		<roles>
-			<role>Alpha Integration Member</role>
-			<role>Alpha Web Team Leader</role>
-			<role>Developer</role>
-		</roles>
-		<timezone>Africa/Johannesburg</timezone>
-	</developer>
-	<developer>
-		<id>14188377</id>
-		<name>Rohan Hemansu Chhipa</name>
-		<email>u14188377@tuks.co.za</email>
-		<roles>
-			<role>Alpha Integration Member</role>
-			<role>Alpha Reporting Team Leader</role>
-			<role>Developer</role>
-		</roles>
-		<timezone>Africa/Johannesburg</timezone>
-	</developer>
-	<developer>
-		<id>14205892</id>
-		<name>Claudio Da Silva</name>
-		<email>u14205892@tuks.co.za</email>
-		<roles>
-			<role>Alpha Integration Member</role>
-			<role>Alpha Notifications Team Leader</role>
-			<role>Developer</role>
-		</roles>
-		<timezone>Africa/Johannesburg</timezone>
-	</developer>
+        <developer>
+            <id>14032644</id>
+            <name>Brenton Watt</name>
+            <email>u14032644@tuks.co.za</email>
+            <roles>
+                <role>Alpha Integration Member</role>
+            </roles>
+            <timezone>Africa/Johannesburg</timezone>
+        </developer>
+        <developer>
+            <id>14040426</id>
+            <name>Fabio Loreggian</name>
+            <email>u14040426@tuks.co.za</email>
+            <roles>
+                <role>Alpha Integration Member</role>
+                <role>Alpha Web Team Leader</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>Africa/Johannesburg</timezone>
+        </developer>
+        <developer>
+            <id>14188377</id>
+            <name>Rohan Hemansu Chhipa</name>
+            <email>u14188377@tuks.co.za</email>
+            <roles>
+                <role>Alpha Integration Member</role>
+                <role>Alpha Reporting Team Leader</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>Africa/Johannesburg</timezone>
+        </developer>
+        <developer>
+            <id>14205892</id>
+            <name>Claudio Da Silva</name>
+            <email>u14205892@tuks.co.za</email>
+            <roles>
+                <role>Alpha Integration Member</role>
+                <role>Alpha Notifications Team Leader</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>Africa/Johannesburg</timezone>
+        </developer>
     </developers>
 
-    <!-- Prerequisites required Maven -->
-    <prerequisites>
-        <maven>3.0</maven>
-    </prerequisites>
-
-    <!-- Properties definitions -->
-    <properties>
-        <java.version>1.8</java.version>
-        <maven-enforcer-plugin.version>1.3.1</maven-enforcer-plugin.version>
-        <maven-sortpom-plugin.version>2.3.0</maven-sortpom-plugin.version>
-        <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <!-- Repository definitions -->
-    <repositories />
-
-    <!-- Build Configuration -->
-    <build>
-        <!-- Plugin Configuration -->
-        <plugins>
-            <plugin>
-                <groupId>com.google.code.sortpom</groupId>
-                <artifactId>maven-sortpom-plugin</artifactId>
-                <version>${maven-sortpom-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sort</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <sortProperties>true</sortProperties>
-                    <nrOfIndentSpace>4</nrOfIndentSpace>
-                    <sortDependencies>groupId,artifactId</sortDependencies>
-                    <sortPlugins>groupId,artifactId</sortPlugins>
-                    <keepBlankLines>true</keepBlankLines>
-                    <expandEmptyElements>false</expandEmptyElements>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>${maven-enforcer-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>enforce-versions</id>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <rules>
-                        <requireMavenVersion>
-                            <message>You are running an older version of Maven. Please upgrade to at least Maven 3.0.</message>
-                            <version>[3.0.0,)</version>
-                        </requireMavenVersion>
-                        <requireJavaVersion>
-                            <message>You are running an older version of Java. Please upgrade to at least JDK ${java.version}.</message>
-                            <version>[${java.version}.0,)</version>
-                        </requireJavaVersion>
-                    </rules>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <repositories>
+        <repository>
+            <id>alpha-team-releases</id>
+            <name>Alpha Team Releases</name>
+            <url>https://nexus.codinginfinity.com/repository/releases/</url>
+        </repository>
+        <repository>
+            <id>alpha-team-snapshots</id>
+            <name>Alpha Team Snapshots</name>
+            <url>https://nexus.codinginfinity.com/repository/snapshots/</url>
+        </repository>
+    </repositories>
 
 </project>
