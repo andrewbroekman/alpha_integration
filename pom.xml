@@ -76,6 +76,13 @@
         </developer>
     </developers>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.codinginfinity.research</groupId>
+            <artifactId>publications</artifactId>
+        </dependency>
+    </dependencies>
+
     <!-- Repository definitions -->
     <repositories>
         <repository>
@@ -89,6 +96,4 @@
             <url>https://nexus.codinginfinity.com/repository/snapshots/</url>
         </repository>
     </repositories>
-
-
 </project>
