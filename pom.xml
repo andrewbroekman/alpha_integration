@@ -90,5 +90,47 @@
         </repository>
     </repositories>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4.1208.jre7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.maven.plugin</groupId>
+            <artifactId>maven-glassfish-plugin</artifactId>
+            <version>2.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.glassfish.maven.plugin</groupId>
+                <artifactId>maven-glassfish-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <terse>true</terse>
+                    <echo>true</echo>
+                    <debug>true</debug>
+                    <user>admin</user>
+                    <adminPassword>glassfish</adminPassword>
+                    <glassfishDirectory>/opt/glassfish/glassfish4</glassfishDirectory>
+                    <domain>
+                        <name>cos301</name>
+                        <host>127.0.0.1</host>
+                        <adminPort>4848</adminPort>
+                    </domain>
+                    <components>
+                        <component>
+                            <name>${project.artifactId}</name>
+                            <artifact>${project.build.directory}/${project.build.finalName}.war</artifact>
+                        </component>
+                    </components>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 
 </project>
