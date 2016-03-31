@@ -1,0 +1,13 @@
+web:
+  image: glassfish:latest
+  ports:
+    - 8080:8080
+    - 4848:4848
+  links:
+    - db
+
+db:
+  image: postgres:9.5.1
+  environment:
+    POSTGRES_USER: research
+    POSTGRES_PASSWORD: u5gdVCLyQDyj
