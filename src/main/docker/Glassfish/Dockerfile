@@ -31,23 +31,32 @@ ENV CONFIG_JVM_ARGS -Djava.security.egd=file:/dev/./urandom
 
 # Setup and configure Glassfish 4 Environment
 # -------------------------------------------
+ADD integration-1.0-SNAPSHOT.war /tmp
 RUN useradd -b /opt -m -s /bin/bash glassfish && \
     echo glassfish:glassfish | chpasswd && \
     cd /opt/glassfish && \
     curl -O $GLASSFISH_PACKAGE && \
     unzip $GLASSFISH_PACKAGE_FILENAME && \
-    rm $GLASSFISH_PACKAGE_FILENAME && \
     chown -R glassfish:glassfish /opt/glassfish* && \
     cd /opt/glassfish/glassfish4/bin && \
+
+
     # User: admin / Pass: glassfish
     # -----------------------------
     echo "admin;{SSHA256}80e0NeB6XBWXsIPa7pT54D9JZ5DR5hGQV1kN1OAsgJePNXY6Pl0EIw==;asadmin" > /opt/glassfish/glassfish4/glassfish/domains/domain1/config/admin-keyfile && \
     echo "AS_ADMIN_PASSWORD=glassfish" > pwdfile && \
+
+    # Setup security and deploy application
     ./asadmin start-domain && \
+    ./asadmin --interactive=false --user admin --passwordfile pwdfile deploy /tmp/integration-1.0-SNAPSHOT.war && \
     ./asadmin --interactive=false --user admin --passwordfile pwdfile enable-secure-admin && \
     ./asadmin stop-domain && \
     echo "export PATH=$PATH:/opt/glassfish/glassfish4/bin" >> /opt/glassfish/.bashrc && \
-    chown -R glassfish:glassfish /opt/glassfish*
+    chown -R glassfish:glassfish /opt/glassfish* && \
+
+    # Clean up
+    rm $GLASSFISH_PACKAGE_FILENAME && \
+    rm /tmp/integration-1.0-SNAPSHOT.war
 
 # Add key and CA store with required SSL certificates
 # ---------------------------------------------------
