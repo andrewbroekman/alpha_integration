@@ -74,6 +74,17 @@
             </roles>
             <timezone>Africa/Johannesburg</timezone>
         </developer>
+	<developer>
+            <id>14009936</id>
+            <name>Reinhardt Cromhout</name>
+            <email>u14009936@tuks.co.za</email>
+            <roles>
+                <role>Alpha Integration Member</role>
+                <role>Alpha Publications Team Leader</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>Africa/Johannesburg</timezone>
+        </developer>
     </developers>
 
     <dependencies>
