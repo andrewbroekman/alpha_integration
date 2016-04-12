@@ -29,5 +29,15 @@ public class PeopleResource {
 	public void addPerson(Person person){
 		
 	}
+		@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void endResearchGroupAssosciation(Person person, Group group){
+		
+	}
 	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void addResearchGroupAssosciation(Person person, Group group){
+		
+	}
 }
