@@ -58,4 +58,10 @@ public class PeopleResource {
 	public void addReserchGroup(Group group){
 		
 	}
+	
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void addReserchGroup(Group group){
+		
+	}	
 }
