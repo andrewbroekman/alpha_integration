@@ -59,9 +59,15 @@ public class PeopleResource {
 		
 	}
 	
-	@PUT
+	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public void addReserchGroup(Group group){
+	public void suspendReserchGroup(Group group){
+		
+	}	
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void reactivateReserchGroup(Group group){
 		
 	}	
 }
