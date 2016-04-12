@@ -40,4 +40,6 @@ public class PeopleResource {
 	public void addResearchGroupAssosciation(Person person, Group group){
 		
 	}
+	
+	
 }
