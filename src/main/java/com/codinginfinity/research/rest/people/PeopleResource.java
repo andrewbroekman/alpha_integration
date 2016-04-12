@@ -24,5 +24,10 @@ public class PeopleResource {
 		
 	}
 	
+	@Put
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void addPerson(Person person){
+		
+	}
 	
 }
