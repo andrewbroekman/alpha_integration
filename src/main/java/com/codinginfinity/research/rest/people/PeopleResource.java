@@ -52,4 +52,10 @@ public class PeopleResource {
 	public void modifyResearcherCategory(Catagory c){
 		
 	}
+	
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void addReserchGroup(Group group){
+		
+	}
 }
