@@ -41,9 +41,15 @@ public class PeopleResource {
 		
 	}
 	
-	@POST
+	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void addResearcherCategory(Catagory c){
+		
+	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void modifyResearcherCategory(Catagory c){
 		
 	}
 }
