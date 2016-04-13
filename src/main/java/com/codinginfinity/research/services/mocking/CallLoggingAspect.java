@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Aspect
 public class CallLoggingAspect {
 
-    @Around(value = "@within(org.urdad.services.mocking.Mocking)" + "|| @annotation(org.urdad.services.mocking" +
+    @Around(value = "@within(com.codinginfinity.research.services.mocking.Mocking)" + "|| @annotation(com.codinginfinity.research.services.mocking" +
             ".Mocking)")
     public Object logCall(ProceedingJoinPoint joinPoint) throws Throwable
     {
