@@ -1,6 +1,9 @@
 package com.codinginfinity.research.people;
 
 import com.codinginfinity.research.people.exeptions.EmailAddressInUse;
+import com.codinginfinity.research.people.exeptions.GroupAssociationAlreadyExists;
+import com.codinginfinity.research.people.exeptions.GroupAssosiationDoesNotExist;
+import com.codinginfinity.research.people.exeptions.UserDoesNotExist;
 import com.codinginfinity.research.people.request.*;
 import com.codinginfinity.research.people.response.*;
 import com.codinginfinity.research.services.RequestNotValidException;
@@ -24,8 +27,17 @@ public class PeopleMock extends BaseMock implements IPeople {
     }
 
     @Override
-    public EditPersonDetailsResponse editPersonDetails(EditPersonDetailsRequest editPersonDetailsRequest) {
-        return null;
+    public EditPersonDetailsResponse editPersonDetails(EditPersonDetailsRequest editPersonDetailsRequest) throws RequestNotValidException, UserDoesNotExist {
+        serviceValidationUtilities.validateRequest(EditPersonDetailsRequest.class, editPersonDetailsRequest);
+        if(getState() == State.invalidUser)
+            throw new UserDoesNotExist();
+        if(editPersonDetailsRequest.getPerson().getFirstName().toLowerCase().equals("john") &&
+                editPersonDetailsRequest.getPerson().getSurname().toLowerCase().equals("doe") &&
+                editPersonDetailsRequest.getPerson().getPrimaryEmail().getAddress().toLowerCase().equals("johndoe@example.com")){
+            return new EditPersonDetailsResponse(editPersonDetailsRequest.getPerson());
+        }else{
+            throw new RequestNotValidException();
+        }
     }
 
     @Override
@@ -43,13 +55,35 @@ public class PeopleMock extends BaseMock implements IPeople {
     }
 
     @Override
-    public EndResearchGroupAssociationResponse editResearchGroupAssociation(EndResearchGroupAssociationRequest endResearchGroupAssociationRequest) {
-        return null;
+    public EndResearchGroupAssociationResponse endResearchGroupAssociation(EndResearchGroupAssociationRequest endResearchGroupAssociationRequest) throws RequestNotValidException, GroupAssosiationDoesNotExist {
+        serviceValidationUtilities.validateRequest(EndResearchGroupAssociationRequest.class, endResearchGroupAssociationRequest);
+        if(getState() == State.invalidGroupAssociation){
+            throw new GroupAssosiationDoesNotExist();
+        }
+        if(endResearchGroupAssociationRequest.getPerson().getFirstName().toLowerCase().equals("john") &&
+                endResearchGroupAssociationRequest.getPerson().getSurname().toLowerCase().equals("doe") &&
+                endResearchGroupAssociationRequest.getPerson().getPrimaryEmail().getAddress().toLowerCase().equals("johndoe@example.com") &&
+                endResearchGroupAssociationRequest.getGroup().getName().equals("CIRG")) {
+            return new EndResearchGroupAssociationResponse(endResearchGroupAssociationRequest.getGroup(), endResearchGroupAssociationRequest.getPerson());
+        }else{
+            throw new RequestNotValidException();
+        }
     }
 
     @Override
-    public AddResearchGroupAssociationResponse addResearchGroupAssociation(AddResearchGroupAssociationRequest addResearchGroupAssociationRequest) {
-        return null;
+    public AddResearchGroupAssociationResponse addResearchGroupAssociation(AddResearchGroupAssociationRequest addResearchGroupAssociationRequest) throws RequestNotValidException, GroupAssociationAlreadyExists {
+        serviceValidationUtilities.validateRequest(AddResearchGroupAssociationRequest.class, addResearchGroupAssociationRequest);
+        if(getState() == State.invalidGroupAssociation){
+            throw new GroupAssociationAlreadyExists();
+        }
+        if(addResearchGroupAssociationRequest.getPerson().getFirstName().toLowerCase().equals("john") &&
+                addResearchGroupAssociationRequest.getPerson().getSurname().toLowerCase().equals("doe") &&
+                addResearchGroupAssociationRequest.getPerson().getPrimaryEmail().getAddress().toLowerCase().equals("johndoe@example.com") &&
+                addResearchGroupAssociationRequest.getGroup().getName().equals("CIRG")) {
+            return new AddResearchGroupAssociationResponse(addResearchGroupAssociationRequest.getGroup(), addResearchGroupAssociationRequest.getPerson());
+        }else{
+            throw new RequestNotValidException();
+        }
     }
 
     @Override
@@ -72,7 +106,9 @@ public class PeopleMock extends BaseMock implements IPeople {
         return null;
     }
 
-    public enum State implements Mock.State{externalRequirementsMet, emailAddressInUse}
+    public enum State implements Mock.State{externalRequirementsMet, emailAddressInUse, invalidUser,
+        invalidGroupAssociation
+    }
 
     @Inject
     private ServiceValidationUtilities serviceValidationUtilities;

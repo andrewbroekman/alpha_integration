@@ -11,4 +11,12 @@ public class Group extends Entity {
 
     public Group() {
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
