@@ -1,5 +1,6 @@
 package com.codinginfinity.research.people.response;
 
+import com.codinginfinity.research.people.Group;
 import com.codinginfinity.research.services.Response;
 
 /**
@@ -8,7 +9,16 @@ import com.codinginfinity.research.services.Response;
 public class AddResearchGroupResponse implements Response {
 
     private static final long serialVersionUID = 7803330950970862845L;
+    Group group;
 
-    public AddResearchGroupResponse() {
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+    public AddResearchGroupResponse(Group group) {
+        this.group = group;
     }
 }
