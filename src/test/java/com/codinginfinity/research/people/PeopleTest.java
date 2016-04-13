@@ -3,8 +3,10 @@ package com.codinginfinity.research.people;
 import com.codinginfinity.research.people.exeptions.EmailAddressInUse;
 import com.codinginfinity.research.people.exeptions.UserDoesNotExist;
 import com.codinginfinity.research.people.request.AddPersonRequest;
+import com.codinginfinity.research.people.request.AddResearcherCategoryRequest;
 import com.codinginfinity.research.people.request.EditPersonDetailsRequest;
 import com.codinginfinity.research.people.response.AddPersonResponse;
+import com.codinginfinity.research.people.response.AddResearcherCategoryResponse;
 import com.codinginfinity.research.people.response.EditPersonDetailsResponse;
 import com.codinginfinity.research.services.RequestNotValidException;
 import org.junit.Test;
@@ -82,6 +84,30 @@ public class PeopleTest {
         peopleMock.addPerson(req);
     }
 
+    @Test
+    public void addResearcherCategory() throws Exception
+    {
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
+        ReseacherCategory r = createAI();
+        AddResearcherCategoryRequest req = new AddResearcherCategoryRequest();
+        req.setReseacherCategory(r);
+        AddResearcherCategoryResponse response = peopleMock.addResearcherCategory(req);
+        ReseacherCategory resp = response.getReseacherCategory();
+        assert (resp.getResearcherCategory().toString().equals("ai"));
+    }
+
+    @Test(expected = RequestNotValidException.class)
+    public void addInvalidResearcherCategory() throws Exception
+    {
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
+
+    }
+
+    @Test
+    public void modifyResearcherCategory() throws Exception
+    {
+        peopleMock.setState(PeopleMock.State.);
+    }
     private static Person createJohnDoe(){
         EmailAddress email = new EmailAddress();
         email.setAddress("johndoe@example.com");
@@ -98,6 +124,13 @@ public class PeopleTest {
         EmailAddress email = new EmailAddress();
         email.setAddress("johndoe@example.com");
         return email;
+    }
+
+    private static ReseacherCategory createAI()
+    {
+        ReseacherCategory reseacherCategory = new ReseacherCategory();
+        reseacherCategory.setResearcherCategoryState("ai");
+        return  reseacherCategory;
     }
 
 }
