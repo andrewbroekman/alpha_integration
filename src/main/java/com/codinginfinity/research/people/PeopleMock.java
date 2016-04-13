@@ -131,7 +131,6 @@ public class PeopleMock extends BaseMock implements IPeople {
     public enum State implements Mock.State{externalRequirementsMet, emailAddressInUse, invalidUser,
         invalidGroupAssociation, invalidResearcherCategory
     }
-    ResearcherCategoryAlreadyExists
     @Inject
     private ServiceValidationUtilities serviceValidationUtilities;
 }
