@@ -143,7 +143,7 @@ public class PeopleTest {
         AddResearchGroupAssociationRequest req = new AddResearchGroupAssociationRequest(g, p);
         peopleMock.addResearchGroupAssociation(req);
     }
-    
+
     @Test
     public void addResearchGroup() throws Exception{
         peopleMock.setState(PeopleMock.State.invalidResearchGroup);
