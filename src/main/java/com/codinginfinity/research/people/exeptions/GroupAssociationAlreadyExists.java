@@ -20,4 +20,5 @@ public class GroupAssociationAlreadyExists extends PreconditionViolation {
     public GroupAssociationAlreadyExists(Throwable cause) {
         super(cause);
     }
+
 }
