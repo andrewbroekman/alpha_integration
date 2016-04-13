@@ -1,9 +1,6 @@
 package com.codinginfinity.research.people;
 
-import com.codinginfinity.research.people.exeptions.EmailAddressInUse;
-import com.codinginfinity.research.people.exeptions.GroupAssociationAlreadyExists;
-import com.codinginfinity.research.people.exeptions.GroupAssosiationDoesNotExist;
-import com.codinginfinity.research.people.exeptions.UserDoesNotExist;
+import com.codinginfinity.research.people.exeptions.*;
 import com.codinginfinity.research.people.request.*;
 import com.codinginfinity.research.people.response.*;
 import com.codinginfinity.research.services.RequestNotValidException;
@@ -97,17 +94,37 @@ public class PeopleMock extends BaseMock implements IPeople {
     }
 
     @Override
-    public AddResearchGroupResponse addResearchGroup(AddResearchGroupRequest addResearchGroupRequest) {
-        return null;
+    public AddResearchGroupResponse addResearchGroup(AddResearchGroupRequest addResearchGroupRequest) throws RequestNotValidException, ResearchGroupAlreadyExists {
+        serviceValidationUtilities.validateRequest(AddResearchGroupRequest.class, addResearchGroupRequest);
+        if(getState() == State.invalidResearchGroup){
+            throw new ResearchGroupAlreadyExists();
+        }
+        if(addResearchGroupRequest.getGroup().getName().equals("CIRG") &&
+                addResearchGroupRequest.getGroup().isActive()){
+            return new AddResearchGroupResponse(addResearchGroupRequest.getGroup());
+        }else{
+            throw new RequestNotValidException();
+        }
     }
 
     @Override
-    public SuspendResearchGroupResponse suspendResearchGroup(SuspendResearchGroupRequest suspendResearchGroupRequest) {
-        return null;
+    public SuspendResearchGroupResponse suspendResearchGroup(SuspendResearchGroupRequest suspendResearchGroupRequest) throws RequestNotValidException, ResearchGroupAlreadySuspended {
+        serviceValidationUtilities.validateRequest(SuspendResearchGroupRequest.class, suspendResearchGroupRequest);
+
+        if(getState() == State.researchGroupAlreadySuspended){
+            throw new ResearchGroupAlreadySuspended();
+        }
+
+        if(suspendResearchGroupRequest.getGroup().getName().equals("CIRG") &&
+                !suspendResearchGroupRequest.getGroup().isActive()){
+            return new SuspendResearchGroupResponse(suspendResearchGroupRequest.getGroup());
+        }else{
+            throw new RequestNotValidException();
+        }
     }
 
     public enum State implements Mock.State{externalRequirementsMet, emailAddressInUse, invalidUser,
-        invalidGroupAssociation
+        invalidGroupAssociation, invalidResearchGroup, researchGroupAlreadySuspended
     }
 
     @Inject

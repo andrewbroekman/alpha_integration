@@ -198,6 +198,13 @@
             <version>${springframework.version}</version>
         </dependency>
 
+        <!-- JasperReports-->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>${jasperreports.version}</version>
+        </dependency>
+
     </dependencies>
 
     <!-- Repository definitions -->
