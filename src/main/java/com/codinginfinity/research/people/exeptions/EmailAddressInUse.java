@@ -7,7 +7,6 @@ import com.codinginfinity.research.services.PreconditionViolation;
  */
 public class EmailAddressInUse extends PreconditionViolation{
     public EmailAddressInUse() {
-        super();
     }
 
     public EmailAddressInUse(String message) {

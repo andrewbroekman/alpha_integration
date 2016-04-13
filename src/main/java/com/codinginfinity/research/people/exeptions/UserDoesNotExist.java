@@ -7,7 +7,6 @@ import com.codinginfinity.research.services.PreconditionViolation;
  */
 public class UserDoesNotExist extends PreconditionViolation{
     public UserDoesNotExist() {
-        super();
     }
 
     public UserDoesNotExist(String message) {

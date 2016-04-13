@@ -7,7 +7,6 @@ import com.codinginfinity.research.services.PreconditionViolation;
  */
 public class GroupAssosiationDoesNotExist extends PreconditionViolation{
     public GroupAssosiationDoesNotExist() {
-        super();
     }
 
     public GroupAssosiationDoesNotExist(String message) {

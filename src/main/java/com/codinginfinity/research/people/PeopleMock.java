@@ -1,6 +1,7 @@
 package com.codinginfinity.research.people;
 
 import com.codinginfinity.research.people.exeptions.EmailAddressInUse;
+import com.codinginfinity.research.people.exeptions.GroupAssociationAlreadyExists;
 import com.codinginfinity.research.people.exeptions.GroupAssosiationDoesNotExist;
 import com.codinginfinity.research.people.exeptions.UserDoesNotExist;
 import com.codinginfinity.research.people.request.*;
@@ -70,8 +71,19 @@ public class PeopleMock extends BaseMock implements IPeople {
     }
 
     @Override
-    public AddResearchGroupAssociationResponse addResearchGroupAssociation(AddResearchGroupAssociationRequest addResearchGroupAssociationRequest) {
-        return null;
+    public AddResearchGroupAssociationResponse addResearchGroupAssociation(AddResearchGroupAssociationRequest addResearchGroupAssociationRequest) throws RequestNotValidException, GroupAssociationAlreadyExists {
+        serviceValidationUtilities.validateRequest(AddResearchGroupAssociationRequest.class, addResearchGroupAssociationRequest);
+        if(getState() == State.invalidGroupAssociation){
+            throw new GroupAssociationAlreadyExists();
+        }
+        if(addResearchGroupAssociationRequest.getPerson().getFirstName().toLowerCase().equals("john") &&
+                addResearchGroupAssociationRequest.getPerson().getSurname().toLowerCase().equals("doe") &&
+                addResearchGroupAssociationRequest.getPerson().getPrimaryEmail().getAddress().toLowerCase().equals("johndoe@example.com") &&
+                addResearchGroupAssociationRequest.getGroup().getName().equals("CIRG")) {
+            return new AddResearchGroupAssociationResponse(addResearchGroupAssociationRequest.getGroup(), addResearchGroupAssociationRequest.getPerson());
+        }else{
+            throw new RequestNotValidException();
+        }
     }
 
     @Override
