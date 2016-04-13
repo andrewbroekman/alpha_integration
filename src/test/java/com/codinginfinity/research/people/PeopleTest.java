@@ -1,7 +1,10 @@
 package com.codinginfinity.research.people;
 
+import com.codinginfinity.research.people.exeptions.EmailAddressInUse;
 import com.codinginfinity.research.people.exeptions.UserDoesNotExist;
+import com.codinginfinity.research.people.request.AddPersonRequest;
 import com.codinginfinity.research.people.request.EditPersonDetailsRequest;
+import com.codinginfinity.research.people.response.AddPersonResponse;
 import com.codinginfinity.research.people.response.EditPersonDetailsResponse;
 import com.codinginfinity.research.services.RequestNotValidException;
 import org.junit.Test;
@@ -34,7 +37,7 @@ public class PeopleTest {
     }
 
     @Test
-    public void regularPersonAdd() throws Exception {
+    public void regularPersonEdit() throws Exception {
         peopleMock.setState(PeopleMock.State.externalRequirementsMet);
         Person p = createJohnDoe();
         EditPersonDetailsRequest req = new EditPersonDetailsRequest();
@@ -44,6 +47,39 @@ public class PeopleTest {
         Person resp = response.getPerson();
         assert (resp.getPrimaryEmail().getAddress().equals("johndoe@example.com") &&
                 resp.getFirstName().equals("john") && resp.getSurname().equals("doe"));
+    }
+
+    @Test (expected = EmailAddressInUse.class)
+    public void addDupliocateUser() throws Exception{
+        peopleMock.setState(PeopleMock.State.emailAddressInUse);
+        Person p = createJohnDoe();
+        AddPersonRequest req = new AddPersonRequest();
+        req.setPerson(p);
+        req.setPrimaryEmail(createJohnDoeEmail());
+        peopleMock.addPerson(req);
+    }
+
+    @Test
+    public void addRegularPerson() throws Exception{
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
+        Person p = createJohnDoe();
+        AddPersonRequest req = new AddPersonRequest();
+        req.setPerson(p);
+        req.setPrimaryEmail(createJohnDoeEmail());
+        AddPersonResponse response = peopleMock.addPerson(req);
+        Person resp = response.getPerson();
+        assert (resp.getPrimaryEmail().getAddress().equals("johndoe@example.com") &&
+                resp.getFirstName().equals("john") && resp.getSurname().equals("doe"));
+    }
+
+    @Test(expected = RequestNotValidException.class)
+    public void addInvalidPersonRequest() throws Exception{
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
+        Person p = new Person("Wrong", "Verkeerd", new EmailAddress("notexistent@email.com#wrong"));
+        AddPersonRequest req = new AddPersonRequest();
+        req.setPerson(p);
+        req.setPrimaryEmail(new EmailAddress("notexistent@email.com#wrong"));
+        peopleMock.addPerson(req);
     }
 
     private static Person createJohnDoe(){
