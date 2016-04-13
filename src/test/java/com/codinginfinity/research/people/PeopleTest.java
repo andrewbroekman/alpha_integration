@@ -1,13 +1,13 @@
 package com.codinginfinity.research.people;
 
-import com.codinginfinity.research.people.exeptions.EmailAddressInUse;
-import com.codinginfinity.research.people.exeptions.UserDoesNotExist;
-import com.codinginfinity.research.people.request.AddPersonRequest;
-import com.codinginfinity.research.people.request.AddResearcherCategoryRequest;
-import com.codinginfinity.research.people.request.EditPersonDetailsRequest;
+import com.codinginfinity.research.people.defaultImpl.People;
+import com.codinginfinity.research.people.exeptions.*;
+import com.codinginfinity.research.people.request.*;
+
 import com.codinginfinity.research.people.response.AddPersonResponse;
 import com.codinginfinity.research.people.response.AddResearcherCategoryResponse;
 import com.codinginfinity.research.people.response.EditPersonDetailsResponse;
+import com.codinginfinity.research.people.response.ModifyResearcherCategoryResponse;
 import com.codinginfinity.research.services.RequestNotValidException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +28,7 @@ public class PeopleTest {
     @Inject
     private PeopleMock peopleMock;
 
+    //editPersonDetails
     @Test(expected = UserDoesNotExist.class)
     public void userDoesNotExistTest() throws Exception{
         peopleMock.setState(PeopleMock.State.invalidUser);
@@ -50,7 +51,7 @@ public class PeopleTest {
         assert (resp.getPrimaryEmail().getAddress().equals("johndoe@example.com") &&
                 resp.getFirstName().equals("john") && resp.getSurname().equals("doe"));
     }
-
+    //addPerson
     @Test (expected = EmailAddressInUse.class)
     public void addDupliocateUser() throws Exception{
         peopleMock.setState(PeopleMock.State.emailAddressInUse);
@@ -83,14 +84,72 @@ public class PeopleTest {
         req.setPrimaryEmail(new EmailAddress("notexistent@email.com#wrong"));
         peopleMock.addPerson(req);
     }
+    //endResearchGroupAssociation
+    @Test(expected = GroupAssosiationDoesNotExist.class)
+    public void endingNotExistentUserGroupAssociation() throws Exception{
+        peopleMock.setState(PeopleMock.State.invalidGroupAssociation);
+        Person p = createJohnDoe();
+        Group g = createCirg();
+        EndResearchGroupAssociationRequest req = new EndResearchGroupAssociationRequest(g,p);
+        peopleMock.endResearchGroupAssociation(req);
+    }
+
+    @Test
+    public void endResearchGroupAssosiation() throws Exception{
+        peopleMock.setState(PeopleMock.State.invalidGroupAssociation);
+        Person p = createJohnDoe();
+        Group g = createCirg();
+        EndResearchGroupAssociationRequest req = new EndResearchGroupAssociationRequest(g,p);
+        peopleMock.endResearchGroupAssociation(req);
+        assert true; //if no exceptions were thrown all went well
+    }
+
+    @Test(expected = RequestNotValidException.class)
+    public void endResearchGroupAssosiationInvalidRequest() throws Exception{
+        peopleMock.setState(PeopleMock.State.invalidGroupAssociation);
+        Person p = createJohnDoe();
+        Group g = createCirg();
+        g.setName("NOT cirg");
+        EndResearchGroupAssociationRequest req = new EndResearchGroupAssociationRequest(g,p);
+        peopleMock.endResearchGroupAssociation(req);
+    }
+
+    //addResearchGroupAssociation
+    @Test(expected = GroupAssociationAlreadyExists.class)
+    public void addExistingReserchGroupAssociation() throws Exception{
+        peopleMock.setState(PeopleMock.State.invalidGroupAssociation);
+        Person p = createJohnDoe();
+        Group g = createCirg();
+        AddResearchGroupAssociationRequest req = new AddResearchGroupAssociationRequest(g,p);
+        peopleMock.addResearchGroupAssociation(req);
+    }
+
+    @Test
+    public void addResearchGroupAssosiation() throws Exception{
+        peopleMock.setState(PeopleMock.State.invalidGroupAssociation);
+        Person p = createJohnDoe();
+        Group g = createCirg();
+        AddResearchGroupAssociationRequest req = new AddResearchGroupAssociationRequest(g,p);
+        peopleMock.addResearchGroupAssociation(req);
+        assert true; //if no exceptions were thrown all went well
+    }
+
+    @Test(expected = RequestNotValidException.class)
+    public void addResearchGroupAssosiationInvalidRequest() throws Exception {
+        peopleMock.setState(PeopleMock.State.invalidGroupAssociation);
+        Person p = createJohnDoe();
+        Group g = createCirg();
+        g.setName("NOT cirg");
+        AddResearchGroupAssociationRequest req = new AddResearchGroupAssociationRequest(g, p);
+        peopleMock.addResearchGroupAssociation(req);
+    }
 
     @Test
     public void addResearcherCategory() throws Exception
     {
         peopleMock.setState(PeopleMock.State.externalRequirementsMet);
         ReseacherCategory r = createAI();
-        AddResearcherCategoryRequest req = new AddResearcherCategoryRequest();
-        req.setReseacherCategory(r);
+        AddResearcherCategoryRequest req = new AddResearcherCategoryRequest(r);
         AddResearcherCategoryResponse response = peopleMock.addResearcherCategory(req);
         ReseacherCategory resp = response.getReseacherCategory();
         assert (resp.getResearcherCategory().toString().equals("ai"));
@@ -99,15 +158,33 @@ public class PeopleTest {
     @Test(expected = RequestNotValidException.class)
     public void addInvalidResearcherCategory() throws Exception
     {
-        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
-
+        peopleMock.setState(PeopleMock.State.invalidResearchGroup);
+        ReseacherCategory reseacherCategory = createAI();
+        reseacherCategory.setResearcherCategoryState("Not AI");
+        AddResearcherCategoryRequest req = new AddResearcherCategoryRequest(reseacherCategory);
+        peopleMock.addResearcherCategory(req);
     }
 
     @Test
     public void modifyResearcherCategory() throws Exception
     {
-        peopleMock.setState(PeopleMock.State.);
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
+        ReseacherCategory r = createAI();
+        ModifyResearcherCategoryRequest req = new ModifyResearcherCategoryRequest(r);
+        ModifyResearcherCategoryResponse response = peopleMock.ModifyResearcherCategory(req);
+        ReseacherCategory resp = response.getReseacherCategory();
+        assert (resp.getResearcherCategory().toString().equals("ai"));
     }
+
+    @Test (expected = ResearcherCategoryDoesntExist.class)
+    public void invalidModifyResearcherCategory() throws Exception
+    {
+        peopleMock.setState(PeopleMock.State.invalidResearcherCategory);
+        ReseacherCategory r = createAI();
+        ModifyResearcherCategoryRequest req = new ModifyResearcherCategoryRequest(r);
+        peopleMock.ModifyResearcherCategory(req);
+    }
+
     private static Person createJohnDoe(){
         EmailAddress email = new EmailAddress();
         email.setAddress("johndoe@example.com");
