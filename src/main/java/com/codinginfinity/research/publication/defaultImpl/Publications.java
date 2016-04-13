@@ -1,7 +1,7 @@
 package com.codinginfinity.research.publication.defaultImpl;
 
-import com.codinginfinity.research.notification.INotifications;
-import com.codinginfinity.research.publication.IPublications;
+import com.codinginfinity.research.notification.INotification;
+import com.codinginfinity.research.publication.IPublication;
 import com.codinginfinity.research.publication.request.*;
 import com.codinginfinity.research.publication.response.*;
 
@@ -11,10 +11,10 @@ import javax.persistence.EntityManager;
 /**
  * Created by andrew on 2016/04/11.
  */
-public class Publications implements IPublications {
+public class Publications implements IPublication {
 
     @Inject
-    private INotifications notifications;
+    private INotification notifications;
 
     @Inject
     private EntityManager manager;

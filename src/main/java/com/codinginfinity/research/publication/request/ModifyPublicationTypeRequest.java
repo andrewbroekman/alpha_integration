@@ -1,7 +1,7 @@
 package com.codinginfinity.research.publication.request;
 
+import com.codinginfinity.research.publication.type.PublicationTypeState;
 import com.codinginfinity.research.services.Request;
-import com.codinginfinity.research.publication.types.PublicationTypeState;
 
 /**
  * Created by andrew on 2016/04/11.
