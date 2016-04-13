@@ -1,9 +1,11 @@
 package com.codinginfinity.research.people;
 
 import com.codinginfinity.research.people.exeptions.EmailAddressInUse;
+import com.codinginfinity.research.people.exeptions.GroupAssociationAlreadyExists;
 import com.codinginfinity.research.people.exeptions.GroupAssosiationDoesNotExist;
 import com.codinginfinity.research.people.exeptions.UserDoesNotExist;
 import com.codinginfinity.research.people.request.AddPersonRequest;
+import com.codinginfinity.research.people.request.AddResearchGroupAssociationRequest;
 import com.codinginfinity.research.people.request.EditPersonDetailsRequest;
 import com.codinginfinity.research.people.request.EndResearchGroupAssociationRequest;
 import com.codinginfinity.research.people.response.AddPersonResponse;
@@ -28,6 +30,7 @@ public class PeopleTest {
     @Inject
     private PeopleMock peopleMock;
 
+    //editPersonDetails
     @Test(expected = UserDoesNotExist.class)
     public void userDoesNotExistTest() throws Exception{
         peopleMock.setState(PeopleMock.State.invalidUser);
@@ -50,7 +53,7 @@ public class PeopleTest {
         assert (resp.getPrimaryEmail().getAddress().equals("johndoe@example.com") &&
                 resp.getFirstName().equals("john") && resp.getSurname().equals("doe"));
     }
-
+    //addPerson
     @Test (expected = EmailAddressInUse.class)
     public void addDupliocateUser() throws Exception{
         peopleMock.setState(PeopleMock.State.emailAddressInUse);
@@ -83,7 +86,7 @@ public class PeopleTest {
         req.setPrimaryEmail(new EmailAddress("notexistent@email.com#wrong"));
         peopleMock.addPerson(req);
     }
-
+    //endResearchGroupAssociation
     @Test(expected = GroupAssosiationDoesNotExist.class)
     public void endingNotExistentUserGroupAssociation() throws Exception{
         peopleMock.setState(PeopleMock.State.invalidGroupAssociation);
@@ -112,6 +115,36 @@ public class PeopleTest {
         EndResearchGroupAssociationRequest req = new EndResearchGroupAssociationRequest(g,p);
         peopleMock.endResearchGroupAssociation(req);
     }
+
+    //addResearchGroupAssociation
+    @Test(expected = GroupAssociationAlreadyExists.class)
+    public void addExistingReserchGroupAssociation() throws Exception{
+        peopleMock.setState(PeopleMock.State.invalidGroupAssociation);
+        Person p = createJohnDoe();
+        Group g = createCirg();
+        AddResearchGroupAssociationRequest req = new AddResearchGroupAssociationRequest(g,p);
+        peopleMock.addResearchGroupAssociation(req);
+    }
+
+    @Test
+    public void addResearchGroupAssosiation() throws Exception{
+        peopleMock.setState(PeopleMock.State.invalidGroupAssociation);
+        Person p = createJohnDoe();
+        Group g = createCirg();
+        AddResearchGroupAssociationRequest req = new AddResearchGroupAssociationRequest(g,p);
+        peopleMock.addResearchGroupAssociation(req);
+        assert true; //if no exceptions were thrown all went well
+    }
+
+    @Test(expected = RequestNotValidException.class)
+    public void addResearchGroupAssosiationInvalidRequest() throws Exception{
+        peopleMock.setState(PeopleMock.State.invalidGroupAssociation);
+        Person p = createJohnDoe();
+        Group g = createCirg();
+        g.setName("NOT cirg");
+        AddResearchGroupAssociationRequest req = new AddResearchGroupAssociationRequest(g,p);
+        peopleMock.addResearchGroupAssociation(req);
+
 
     private static Person createJohnDoe(){
         EmailAddress email = new EmailAddress();
