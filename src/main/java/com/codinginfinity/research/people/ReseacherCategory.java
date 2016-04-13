@@ -11,16 +11,16 @@ public class ReseacherCategory extends BaseEntity {
 
     private static final long serialVersionUID = 3297201826811126033L;
 
-    private List<ReseacherCategory> researcherCategory;
+    private List<String> researcherCategory;
 
     public ReseacherCategory() {
     }
 
-    public List<ReseacherCategory> getResearcherCategory() {
+    public List<String> getResearcherCategory() {
         return researcherCategory.subList(0,1);
     }
 
-    public void setResearcherCategoryState(List<ReseacherCategory> researcherCategoryState) {
-        this.researcherCategory = researcherCategoryState;
+    public void setResearcherCategoryState(String researcherCategoryState) {
+        researcherCategory.add(researcherCategoryState);
     }
 }

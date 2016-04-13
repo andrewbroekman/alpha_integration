@@ -1,12 +1,13 @@
 package com.codinginfinity.research.people;
 
-import com.codinginfinity.research.people.exeptions.EmailAddressInUse;
-import com.codinginfinity.research.people.exeptions.GroupAssociationAlreadyExists;
-import com.codinginfinity.research.people.exeptions.GroupAssosiationDoesNotExist;
-import com.codinginfinity.research.people.exeptions.UserDoesNotExist;
+
+import com.codinginfinity.research.people.defaultImpl.People;
+import com.codinginfinity.research.people.exeptions.*;
 import com.codinginfinity.research.people.request.*;
 import com.codinginfinity.research.people.response.AddPersonResponse;
+import com.codinginfinity.research.people.response.AddResearcherCategoryResponse;
 import com.codinginfinity.research.people.response.EditPersonDetailsResponse;
+import com.codinginfinity.research.people.response.ModifyResearcherCategoryResponse;
 import com.codinginfinity.research.services.RequestNotValidException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -144,6 +145,7 @@ public class PeopleTest {
         peopleMock.addResearchGroupAssociation(req);
     }
 
+
     @Test
     public void addResearchGroup() throws Exception{
         peopleMock.setState(PeopleMock.State.invalidResearchGroup);
@@ -162,6 +164,47 @@ public class PeopleTest {
     }
 
 
+    @Test
+    public void addResearcherCategory() throws Exception
+    {
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
+        ReseacherCategory r = createAI();
+        AddResearcherCategoryRequest req = new AddResearcherCategoryRequest(r);
+        AddResearcherCategoryResponse response = peopleMock.addResearcherCategory(req);
+        ReseacherCategory resp = response.getReseacherCategory();
+        assert (resp.getResearcherCategory().toString().equals("ai"));
+    }
+
+    @Test(expected = RequestNotValidException.class)
+    public void addInvalidResearcherCategory() throws Exception
+    {
+        peopleMock.setState(PeopleMock.State.invalidResearchGroup);
+        ReseacherCategory reseacherCategory = createAI();
+        reseacherCategory.setResearcherCategoryState("Not AI");
+        AddResearcherCategoryRequest req = new AddResearcherCategoryRequest(reseacherCategory);
+        peopleMock.addResearcherCategory(req);
+    }
+
+    @Test
+    public void modifyResearcherCategory() throws Exception
+    {
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
+        ReseacherCategory r = createAI();
+        ModifyResearcherCategoryRequest req = new ModifyResearcherCategoryRequest(r);
+        ModifyResearcherCategoryResponse response = peopleMock.ModifyResearcherCategory(req);
+        ReseacherCategory resp = response.getReseacherCategory();
+        assert (resp.getResearcherCategory().toString().equals("ai"));
+    }
+
+    @Test (expected = ResearcherCategoryDoesntExist.class)
+    public void invalidModifyResearcherCategory() throws Exception
+    {
+        peopleMock.setState(PeopleMock.State.invalidResearcherCategory);
+        ReseacherCategory r = createAI();
+        ModifyResearcherCategoryRequest req = new ModifyResearcherCategoryRequest(r);
+        peopleMock.ModifyResearcherCategory(req);
+    }
+
     private static Person createJohnDoe(){
         EmailAddress email = new EmailAddress();
         email.setAddress("johndoe@example.com");
@@ -177,6 +220,13 @@ public class PeopleTest {
         EmailAddress email = new EmailAddress();
         email.setAddress("johndoe@example.com");
         return email;
+    }
+
+    private static ReseacherCategory createAI()
+    {
+        ReseacherCategory reseacherCategory = new ReseacherCategory();
+        reseacherCategory.setResearcherCategoryState("ai");
+        return  reseacherCategory;
     }
 
 }
