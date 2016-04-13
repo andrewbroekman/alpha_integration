@@ -1,6 +1,7 @@
 package com.codinginfinity.research.people;
 
 import com.codinginfinity.research.people.exeptions.EmailAddressInUse;
+import com.codinginfinity.research.people.exeptions.GroupAssosiationDoesNotExist;
 import com.codinginfinity.research.people.exeptions.UserDoesNotExist;
 import com.codinginfinity.research.people.request.*;
 import com.codinginfinity.research.people.response.*;
@@ -53,8 +54,19 @@ public class PeopleMock extends BaseMock implements IPeople {
     }
 
     @Override
-    public EndResearchGroupAssociationResponse editResearchGroupAssociation(EndResearchGroupAssociationRequest endResearchGroupAssociationRequest) {
-        return null;
+    public EndResearchGroupAssociationResponse endResearchGroupAssociation(EndResearchGroupAssociationRequest endResearchGroupAssociationRequest) throws RequestNotValidException, GroupAssosiationDoesNotExist {
+        serviceValidationUtilities.validateRequest(EndResearchGroupAssociationRequest.class, endResearchGroupAssociationRequest);
+        if(getState() == State.invalidGroupAssociation){
+            throw new GroupAssosiationDoesNotExist();
+        }
+        if(endResearchGroupAssociationRequest.getPerson().getFirstName().toLowerCase().equals("john") &&
+                endResearchGroupAssociationRequest.getPerson().getSurname().toLowerCase().equals("doe") &&
+                endResearchGroupAssociationRequest.getPerson().getPrimaryEmail().getAddress().toLowerCase().equals("johndoe@example.com") &&
+                endResearchGroupAssociationRequest.getGroup().getName().equals("CIRG")) {
+            return new EndResearchGroupAssociationResponse(endResearchGroupAssociationRequest.getGroup(), endResearchGroupAssociationRequest.getPerson());
+        }else{
+            throw new RequestNotValidException();
+        }
     }
 
     @Override
@@ -82,7 +94,9 @@ public class PeopleMock extends BaseMock implements IPeople {
         return null;
     }
 
-    public enum State implements Mock.State{externalRequirementsMet, emailAddressInUse, invalidUser}
+    public enum State implements Mock.State{externalRequirementsMet, emailAddressInUse, invalidUser,
+        invalidGroupAssociation
+    }
 
     @Inject
     private ServiceValidationUtilities serviceValidationUtilities;

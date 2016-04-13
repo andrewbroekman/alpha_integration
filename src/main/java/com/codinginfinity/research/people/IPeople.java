@@ -1,6 +1,7 @@
 package com.codinginfinity.research.people;
 
 import com.codinginfinity.research.people.exeptions.EmailAddressInUse;
+import com.codinginfinity.research.people.exeptions.GroupAssosiationDoesNotExist;
 import com.codinginfinity.research.people.exeptions.UserDoesNotExist;
 import com.codinginfinity.research.people.request.*;
 import com.codinginfinity.research.people.response.*;
@@ -13,7 +14,7 @@ public interface IPeople {
 
     EditPersonDetailsResponse editPersonDetails(EditPersonDetailsRequest editPersonDetailsRequest) throws RequestNotValidException, UserDoesNotExist;
     AddPersonResponse addPerson(AddPersonRequest addPersonRequest) throws RequestNotValidException, EmailAddressInUse;
-    EndResearchGroupAssociationResponse editResearchGroupAssociation(EndResearchGroupAssociationRequest endResearchGroupAssociationRequest);
+    EndResearchGroupAssociationResponse endResearchGroupAssociation(EndResearchGroupAssociationRequest endResearchGroupAssociationRequest) throws RequestNotValidException, GroupAssosiationDoesNotExist;
     AddResearchGroupAssociationResponse addResearchGroupAssociation(AddResearchGroupAssociationRequest addResearchGroupAssociationRequest);
     AddResearcherCategoryResponse addResearcherCategory(AddResearcherCategoryRequest addResearcherCategoryRequest);
     ModifyResearcherCategoryResponse ModifyResearcherCategory(ModifyResearcherCategoryRequest modifyResearcherCategoryRequest);
