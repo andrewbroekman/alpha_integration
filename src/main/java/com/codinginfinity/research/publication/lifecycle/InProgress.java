@@ -11,4 +11,16 @@ public class InProgress extends LifeCycleState  {
 
     public InProgress() {
     }
+
+    public InProgress(Integer percentageCompleted) {
+        this.percentageCompleted = percentageCompleted;
+    }
+
+    public Integer getPercentageCompleted() {
+        return percentageCompleted;
+    }
+
+    public void setPercentageCompleted(Integer percentageCompleted) {
+        this.percentageCompleted = percentageCompleted;
+    }
 }

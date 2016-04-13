@@ -1,5 +1,6 @@
 package com.codinginfinity.research.publication.response;
 
+import com.codinginfinity.research.publication.type.PublicationType;
 import com.codinginfinity.research.services.Response;
 
 /**
@@ -11,6 +12,18 @@ public class AddPublicationTypeResponse implements Response {
 
     private long newPublicationType;
 
-    public AddPublicationTypeResponse() {
+    public AddPublicationTypeResponse(long newPublicationType) {
+        this.newPublicationType = newPublicationType;
+    }
+
+    public AddPublicationTypeResponse(PublicationType publicationType) {
+    }
+
+    public long getNewPublicationType() {
+        return newPublicationType;
+    }
+
+    public void setNewPublicationType(long newPublicationType) {
+        this.newPublicationType = newPublicationType;
     }
 }

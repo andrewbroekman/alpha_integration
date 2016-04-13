@@ -14,4 +14,25 @@ public class PublicationType extends BaseEntity {
 
     public PublicationType() {
     }
+
+    public PublicationType(String name, PublicationTypeState stateEntry) {
+        this.name = name;
+        addStateEntry(stateEntry);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public PublicationTypeState getStateEntry() {
+        return this.stateEntry;
+    }
+
+    public void addStateEntry(PublicationTypeState stateEntry) {
+        this.stateEntry = stateEntry;
+    }
 }
