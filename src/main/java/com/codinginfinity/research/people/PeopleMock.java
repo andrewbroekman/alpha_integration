@@ -1,11 +1,9 @@
 package com.codinginfinity.research.people;
 
-import com.codinginfinity.research.people.exeptions.EmailAddressInUse;
-import com.codinginfinity.research.people.exeptions.GroupAssociationAlreadyExists;
-import com.codinginfinity.research.people.exeptions.GroupAssosiationDoesNotExist;
-import com.codinginfinity.research.people.exeptions.UserDoesNotExist;
+import com.codinginfinity.research.people.exeptions.*;
 import com.codinginfinity.research.people.request.*;
 import com.codinginfinity.research.people.response.*;
+import com.codinginfinity.research.services.Request;
 import com.codinginfinity.research.services.RequestNotValidException;
 import com.codinginfinity.research.services.mocking.BaseMock;
 import com.codinginfinity.research.services.mocking.Mock;
@@ -17,6 +15,7 @@ import javax.inject.Inject;
 
 /**
  * Created by reinhardt on 2016/04/13.
+ * Added to by Brenton
  */
 @Stateless
 @Service
@@ -87,13 +86,36 @@ public class PeopleMock extends BaseMock implements IPeople {
     }
 
     @Override
-    public AddResearcherCategoryResponse addResearcherCategory(AddResearcherCategoryRequest addResearcherCategoryRequest) {
-        return null;
+    public AddResearcherCategoryResponse addResearcherCategory(AddResearcherCategoryRequest addResearcherCategoryRequest)throws RequestNotValidException, ResearcherCategoryAlreadyExists
+    {
+        serviceValidationUtilities.validateRequest(AddResearcherCategoryRequest.class, addResearcherCategoryRequest);
+        if(getState() == State.invalidResearcherCategory)
+        {
+            throw new ResearcherCategoryAlreadyExists();
+        }
+        if(addResearcherCategoryRequest.getReseacherCategory().toString().toLowerCase().equals("ai")) {
+            return new AddResearcherCategoryResponse(addResearcherCategoryRequest.getReseacherCategory());
+        }
+        else
+        {
+            throw new RequestNotValidException();
+        }
     }
 
     @Override
-    public ModifyResearcherCategoryResponse ModifyResearcherCategory(ModifyResearcherCategoryRequest modifyResearcherCategoryRequest) {
-        return null;
+    public ModifyResearcherCategoryResponse ModifyResearcherCategory(ModifyResearcherCategoryRequest modifyResearcherCategoryRequest)throws RequestNotValidException, ResearcherCategoryDoesntExist{
+        serviceValidationUtilities.validateRequest(ModifyResearcherCategoryRequest.class, modifyResearcherCategoryRequest);
+        if(getState() == State.invalidResearcherCategory)
+        {
+            throw new ResearcherCategoryDoesntExist();
+        }
+        if(modifyResearcherCategoryRequest.getReseacherCategory().toString().toLowerCase().equals("ai")){
+            return new ModifyResearcherCategoryResponse(modifyResearcherCategoryRequest.getReseacherCategory());
+        }
+        else
+        {
+            throw new RequestNotValidException();
+        }
     }
 
     @Override
@@ -107,9 +129,9 @@ public class PeopleMock extends BaseMock implements IPeople {
     }
 
     public enum State implements Mock.State{externalRequirementsMet, emailAddressInUse, invalidUser,
-        invalidGroupAssociation
+        invalidGroupAssociation, invalidResearcherCategory
     }
-
+    ResearcherCategoryAlreadyExists
     @Inject
     private ServiceValidationUtilities serviceValidationUtilities;
 }

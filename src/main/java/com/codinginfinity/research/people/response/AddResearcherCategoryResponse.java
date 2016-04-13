@@ -1,5 +1,6 @@
 package com.codinginfinity.research.people.response;
 
+import com.codinginfinity.research.people.ReseacherCategory;
 import com.codinginfinity.research.services.Response;
 
 /**
@@ -8,7 +9,19 @@ import com.codinginfinity.research.services.Response;
 public class AddResearcherCategoryResponse implements Response {
 
     private static final long serialVersionUID = -3987194448060344402L;
+    ReseacherCategory reseacherCategory;
+    public ReseacherCategory getReseacherCategory()
+    {
+        return reseacherCategory;
+    }
 
-    public AddResearcherCategoryResponse() {
+    public void setReseacherCategory(ReseacherCategory reseacherCategory)
+    {
+        this.reseacherCategory = reseacherCategory;
+    }
+
+    public AddResearcherCategoryResponse(ReseacherCategory reseacherCategory)
+    {
+        this.reseacherCategory = reseacherCategory;
     }
 }
