@@ -15,6 +15,9 @@ public class AddPublicationResponse implements Response {
     public AddPublicationResponse() {
     }
 
+    public AddPublicationResponse(Publication publication) {
+    }
+
     public Publication getAddedPublication() {
         return addedPublication;
     }

@@ -20,7 +20,7 @@ public class People implements IPeople {
     }
 
     @Override
-    public EndResearchGroupAssociationResponse editResearchGroupAssociation(EndResearchGroupAssociationRequest endResearchGroupAssociationRequest) {
+    public EndResearchGroupAssociationResponse endResearchGroupAssociation(EndResearchGroupAssociationRequest endResearchGroupAssociationRequest) {
         return null;
     }
 

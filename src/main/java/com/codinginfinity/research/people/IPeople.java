@@ -16,6 +16,7 @@ public interface IPeople {
     AddResearchGroupAssociationResponse addResearchGroupAssociation(AddResearchGroupAssociationRequest addResearchGroupAssociationRequest) throws RequestNotValidException, GroupAssociationAlreadyExists;
     AddResearcherCategoryResponse addResearcherCategory(AddResearcherCategoryRequest addResearcherCategoryRequest) throws RequestNotValidException, ResearcherCategoryAlreadyExists;
     ModifyResearcherCategoryResponse ModifyResearcherCategory(ModifyResearcherCategoryRequest modifyResearcherCategoryRequest)throws RequestNotValidException, ResearcherCategoryDoesntExist;
-    AddResearchGroupResponse addResearchGroup(AddResearchGroupRequest addResearchGroupRequest);
-    SuspendResearchGroupResponse suspendResearchGroup(SuspendResearchGroupRequest suspendResearchGroupRequest);
+    AddResearchGroupResponse addResearchGroup(AddResearchGroupRequest addResearchGroupRequest) throws RequestNotValidException, ResearchGroupAlreadyExists;
+    SuspendResearchGroupResponse suspendResearchGroup(SuspendResearchGroupRequest suspendResearchGroupRequest) throws RequestNotValidException, ResearchGroupAlreadySuspended;
+
 }

@@ -11,6 +11,12 @@ public class EmailAddress extends BaseEntity{
 
     private String address;
 
+    public EmailAddress(){ }
+
+    public EmailAddress(String address) {
+        this.address = address;
+    }
+
     public String getAddress() {
         return address;
     }
