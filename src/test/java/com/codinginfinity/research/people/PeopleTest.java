@@ -29,7 +29,6 @@ public class PeopleTest {
         req.setPerson(p);
         req.setPrimaryEmail(createJohnDoeEmail());
         peopleMock.editPersonDetails(req);
-        assert 1 == 1;
     }
 
     private static Person createJohnDoe(){
