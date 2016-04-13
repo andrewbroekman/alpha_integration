@@ -1,9 +1,9 @@
 package com.codinginfinity.research.people;
 
+
 import com.codinginfinity.research.people.defaultImpl.People;
 import com.codinginfinity.research.people.exeptions.*;
 import com.codinginfinity.research.people.request.*;
-
 import com.codinginfinity.research.people.response.AddPersonResponse;
 import com.codinginfinity.research.people.response.AddResearcherCategoryResponse;
 import com.codinginfinity.research.people.response.EditPersonDetailsResponse;
@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
+import java.time.LocalDateTime;
 
 /**
  * Created by andrew on 2016/04/11.
@@ -53,7 +54,7 @@ public class PeopleTest {
     }
     //addPerson
     @Test (expected = EmailAddressInUse.class)
-    public void addDupliocateUser() throws Exception{
+    public void addDuplicateUser() throws Exception{
         peopleMock.setState(PeopleMock.State.emailAddressInUse);
         Person p = createJohnDoe();
         AddPersonRequest req = new AddPersonRequest();
@@ -144,6 +145,25 @@ public class PeopleTest {
         peopleMock.addResearchGroupAssociation(req);
     }
 
+
+    @Test
+    public void addResearchGroup() throws Exception{
+        peopleMock.setState(PeopleMock.State.invalidResearchGroup);
+        Group g = createCirg();
+        AddResearchGroupRequest req = new AddResearchGroupRequest(g);
+        peopleMock.addResearchGroup(req);
+    }
+
+    @Test(expected = RequestNotValidException.class)
+    public void addResearchGroupInvalidRequest() throws Exception{
+        peopleMock.setState(PeopleMock.State.invalidResearchGroup);
+        Group g = createCirg();
+        g.setName("Not CIRG");
+        AddResearchGroupRequest req = new AddResearchGroupRequest(g);
+        peopleMock.addResearchGroup(req);
+    }
+
+
     @Test
     public void addResearcherCategory() throws Exception
     {
@@ -192,8 +212,7 @@ public class PeopleTest {
     }
 
     private static Group createCirg(){
-        Group group = new Group();
-        group.setName("CIRG");
+        Group group = new Group("CIRG");
         return group;
     }
 

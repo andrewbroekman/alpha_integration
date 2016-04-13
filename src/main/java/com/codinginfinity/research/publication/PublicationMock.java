@@ -92,6 +92,7 @@ public class PublicationMock extends BaseMock implements IPublication {
     public ChangePublicationStateResponse changePublicationState(ChangePublicationStateRequest changePublicationStateRequest) throws RequestNotValidException {
 
         serviceValidationUtilities.validateRequest(ChangePublicationStateRequest.class, changePublicationStateRequest);
+        return null;
     }
 
     @Override
@@ -135,30 +136,35 @@ public class PublicationMock extends BaseMock implements IPublication {
     public ModifyPublicationTypeResponse modifyPublicationType(ModifyPublicationTypeRequest modifyPublicationTypeRequest) throws RequestNotValidException {
 
         serviceValidationUtilities.validateRequest(ModifyPublicationTypeRequest.class, modifyPublicationTypeRequest);
+        return null;
     }
 
     @Override
     public GetPublicationsForPersonResponse getPublicationsForPerson(GetPublicationsForPersonRequest getPublicationsForPersonRequest) throws RequestNotValidException {
 
         serviceValidationUtilities.validateRequest(GetPublicationsForPersonRequest.class, getPublicationsForPersonRequest);
+        return null;
     }
 
     @Override
     public GetPublicationsForGroupResponse getPublicationsForGroup(GetPublicationsForGroupRequest getPublicationsForGroupRequest) throws RequestNotValidException {
 
         serviceValidationUtilities.validateRequest(GetPublicationsForGroupRequest.class, getPublicationsForGroupRequest);
+        return null;
     }
 
     @Override
     public CalcAccreditationPointsForPersonResponse calcAccreditationPointsForPerson(CalcAccreditationPointsForPersonRequest calcAccreditationPointsForPersonRequest) throws RequestNotValidException {
 
         serviceValidationUtilities.validateRequest(CalcAccreditationPointsForPersonRequest.class, calcAccreditationPointsForPersonRequest);
+        return null;
     }
 
     @Override
     public CalcAccreditationPointsForGroupResponse calcAccreditationPointsForGroup(CalcAccreditationPointsForGroupRequest calcAccreditationPointsForGroupRequest) throws RequestNotValidException {
 
         serviceValidationUtilities.validateRequest(CalcAccreditationPointsForGroupRequest.class, calcAccreditationPointsForGroupRequest);
+        return null;
     }
 
     private static Publication createNormalPublication() {
