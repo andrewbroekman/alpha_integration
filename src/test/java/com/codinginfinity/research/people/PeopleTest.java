@@ -96,7 +96,7 @@ public class PeopleTest {
 
     @Test
     public void endResearchGroupAssosiation() throws Exception{
-        peopleMock.setState(PeopleMock.State.invalidGroupAssociation);
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
         Person p = createJohnDoe();
         Group g = createCirg();
         EndResearchGroupAssociationRequest req = new EndResearchGroupAssociationRequest(g,p);
@@ -106,7 +106,7 @@ public class PeopleTest {
 
     @Test(expected = RequestNotValidException.class)
     public void endResearchGroupAssosiationInvalidRequest() throws Exception{
-        peopleMock.setState(PeopleMock.State.invalidGroupAssociation);
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
         Person p = createJohnDoe();
         Group g = createCirg();
         g.setName("NOT cirg");
@@ -126,7 +126,7 @@ public class PeopleTest {
 
     @Test
     public void addResearchGroupAssosiation() throws Exception{
-        peopleMock.setState(PeopleMock.State.invalidGroupAssociation);
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
         Person p = createJohnDoe();
         Group g = createCirg();
         AddResearchGroupAssociationRequest req = new AddResearchGroupAssociationRequest(g,p);
@@ -136,7 +136,7 @@ public class PeopleTest {
 
     @Test(expected = RequestNotValidException.class)
     public void addResearchGroupAssosiationInvalidRequest() throws Exception {
-        peopleMock.setState(PeopleMock.State.invalidGroupAssociation);
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
         Person p = createJohnDoe();
         Group g = createCirg();
         g.setName("NOT cirg");
