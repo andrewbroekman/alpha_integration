@@ -5,20 +5,20 @@ import com.codinginfinity.research.services.PreconditionViolation;
 /**
  * Created by reinhardt on 2016/04/13.
  */
-public class EmailAddressInUse extends PreconditionViolation{
-    public EmailAddressInUse() {
+public class UserDoesNotExist extends PreconditionViolation{
+    public UserDoesNotExist() {
         super();
     }
 
-    public EmailAddressInUse(String message) {
+    public UserDoesNotExist(String message) {
         super(message);
     }
 
-    public EmailAddressInUse(String message, Throwable cause) {
+    public UserDoesNotExist(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public EmailAddressInUse(Throwable cause) {
+    public UserDoesNotExist(Throwable cause) {
         super(cause);
     }
 }

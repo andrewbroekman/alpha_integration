@@ -1,6 +1,7 @@
 package com.codinginfinity.research.people;
 
 import com.codinginfinity.research.people.exeptions.EmailAddressInUse;
+import com.codinginfinity.research.people.exeptions.UserDoesNotExist;
 import com.codinginfinity.research.people.request.*;
 import com.codinginfinity.research.people.response.*;
 import com.codinginfinity.research.services.RequestNotValidException;
@@ -24,8 +25,17 @@ public class PeopleMock extends BaseMock implements IPeople {
     }
 
     @Override
-    public EditPersonDetailsResponse editPersonDetails(EditPersonDetailsRequest editPersonDetailsRequest) {
-        return null;
+    public EditPersonDetailsResponse editPersonDetails(EditPersonDetailsRequest editPersonDetailsRequest) throws RequestNotValidException, UserDoesNotExist {
+        serviceValidationUtilities.validateRequest(EditPersonDetailsRequest.class, editPersonDetailsRequest);
+        if(getState() == State.invalidUser)
+            throw new UserDoesNotExist();
+        if(editPersonDetailsRequest.getPerson().getFirstName().toLowerCase().equals("john") &&
+                editPersonDetailsRequest.getPerson().getSurname().toLowerCase().equals("doe") &&
+                editPersonDetailsRequest.getPerson().getPrimaryEmail().getAddress().toLowerCase().equals("johndoe@example.com")){
+            return new EditPersonDetailsResponse(editPersonDetailsRequest.getPerson());
+        }else{
+            throw new RequestNotValidException();
+        }
     }
 
     @Override
@@ -72,7 +82,7 @@ public class PeopleMock extends BaseMock implements IPeople {
         return null;
     }
 
-    public enum State implements Mock.State{externalRequirementsMet, emailAddressInUse}
+    public enum State implements Mock.State{externalRequirementsMet, emailAddressInUse, invalidUser}
 
     @Inject
     private ServiceValidationUtilities serviceValidationUtilities;
