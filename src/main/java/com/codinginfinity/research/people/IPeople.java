@@ -1,7 +1,9 @@
 package com.codinginfinity.research.people;
 
+import com.codinginfinity.research.people.exeptions.EmailAddressInUse;
 import com.codinginfinity.research.people.request.*;
 import com.codinginfinity.research.people.response.*;
+import com.codinginfinity.research.services.RequestNotValidException;
 
 /**
  * Created by andrew on 2016/04/11.
@@ -9,12 +11,11 @@ import com.codinginfinity.research.people.response.*;
 public interface IPeople {
 
     EditPersonDetailsResponse editPersonDetails(EditPersonDetailsRequest editPersonDetailsRequest);
-    AddPersonResponse addPerson(AddPersonRequest addPersonRequest);
+    AddPersonResponse addPerson(AddPersonRequest addPersonRequest) throws RequestNotValidException, EmailAddressInUse;
     EndResearchGroupAssociationResponse editResearchGroupAssociation(EndResearchGroupAssociationRequest endResearchGroupAssociationRequest);
     AddResearchGroupAssociationResponse addResearchGroupAssociation(AddResearchGroupAssociationRequest addResearchGroupAssociationRequest);
     AddResearcherCategoryResponse addResearcherCategory(AddResearcherCategoryRequest addResearcherCategoryRequest);
     ModifyResearcherCategoryResponse ModifyResearcherCategory(ModifyResearcherCategoryRequest modifyResearcherCategoryRequest);
     AddResearchGroupResponse addResearchGroup(AddResearchGroupRequest addResearchGroupRequest);
     SuspendResearchGroupResponse suspendResearchGroup(SuspendResearchGroupRequest suspendResearchGroupRequest);
-
 }
