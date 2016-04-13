@@ -4,10 +4,7 @@ import com.codinginfinity.research.people.exeptions.EmailAddressInUse;
 import com.codinginfinity.research.people.exeptions.GroupAssociationAlreadyExists;
 import com.codinginfinity.research.people.exeptions.GroupAssosiationDoesNotExist;
 import com.codinginfinity.research.people.exeptions.UserDoesNotExist;
-import com.codinginfinity.research.people.request.AddPersonRequest;
-import com.codinginfinity.research.people.request.AddResearchGroupAssociationRequest;
-import com.codinginfinity.research.people.request.EditPersonDetailsRequest;
-import com.codinginfinity.research.people.request.EndResearchGroupAssociationRequest;
+import com.codinginfinity.research.people.request.*;
 import com.codinginfinity.research.people.response.AddPersonResponse;
 import com.codinginfinity.research.people.response.EditPersonDetailsResponse;
 import com.codinginfinity.research.services.RequestNotValidException;
@@ -18,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
+import java.time.LocalDateTime;
 
 /**
  * Created by andrew on 2016/04/11.
@@ -55,7 +53,7 @@ public class PeopleTest {
     }
     //addPerson
     @Test (expected = EmailAddressInUse.class)
-    public void addDupliocateUser() throws Exception{
+    public void addDuplicateUser() throws Exception{
         peopleMock.setState(PeopleMock.State.emailAddressInUse);
         Person p = createJohnDoe();
         AddPersonRequest req = new AddPersonRequest();
@@ -137,13 +135,31 @@ public class PeopleTest {
     }
 
     @Test(expected = RequestNotValidException.class)
-    public void addResearchGroupAssosiationInvalidRequest() throws Exception{
+    public void addResearchGroupAssosiationInvalidRequest() throws Exception {
         peopleMock.setState(PeopleMock.State.invalidGroupAssociation);
         Person p = createJohnDoe();
         Group g = createCirg();
         g.setName("NOT cirg");
-        AddResearchGroupAssociationRequest req = new AddResearchGroupAssociationRequest(g,p);
+        AddResearchGroupAssociationRequest req = new AddResearchGroupAssociationRequest(g, p);
         peopleMock.addResearchGroupAssociation(req);
+    }
+    
+    @Test
+    public void addResearchGroup() throws Exception{
+        peopleMock.setState(PeopleMock.State.invalidResearchGroup);
+        Group g = createCirg();
+        AddResearchGroupRequest req = new AddResearchGroupRequest(g);
+        peopleMock.addResearchGroup(req);
+    }
+
+    @Test(expected = RequestNotValidException.class)
+    public void addResearchGroupInvalidRequest() throws Exception{
+        peopleMock.setState(PeopleMock.State.invalidResearchGroup);
+        Group g = createCirg();
+        g.setName("Not CIRG");
+        AddResearchGroupRequest req = new AddResearchGroupRequest(g);
+        peopleMock.addResearchGroup(req);
+    }
 
 
     private static Person createJohnDoe(){
@@ -153,8 +169,7 @@ public class PeopleTest {
     }
 
     private static Group createCirg(){
-        Group group = new Group();
-        group.setName("CIRG");
+        Group group = new Group("CIRG");
         return group;
     }
 
