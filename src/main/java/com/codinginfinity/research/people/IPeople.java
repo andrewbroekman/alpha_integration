@@ -1,9 +1,6 @@
 package com.codinginfinity.research.people;
 
-import com.codinginfinity.research.people.exeptions.EmailAddressInUse;
-import com.codinginfinity.research.people.exeptions.GroupAssociationAlreadyExists;
-import com.codinginfinity.research.people.exeptions.GroupAssosiationDoesNotExist;
-import com.codinginfinity.research.people.exeptions.UserDoesNotExist;
+import com.codinginfinity.research.people.exeptions.*;
 import com.codinginfinity.research.people.request.*;
 import com.codinginfinity.research.people.response.*;
 import com.codinginfinity.research.services.RequestNotValidException;
@@ -19,6 +16,6 @@ public interface IPeople {
     AddResearchGroupAssociationResponse addResearchGroupAssociation(AddResearchGroupAssociationRequest addResearchGroupAssociationRequest) throws RequestNotValidException, GroupAssociationAlreadyExists;
     AddResearcherCategoryResponse addResearcherCategory(AddResearcherCategoryRequest addResearcherCategoryRequest);
     ModifyResearcherCategoryResponse ModifyResearcherCategory(ModifyResearcherCategoryRequest modifyResearcherCategoryRequest);
-    AddResearchGroupResponse addResearchGroup(AddResearchGroupRequest addResearchGroupRequest);
-    SuspendResearchGroupResponse suspendResearchGroup(SuspendResearchGroupRequest suspendResearchGroupRequest);
+    AddResearchGroupResponse addResearchGroup(AddResearchGroupRequest addResearchGroupRequest) throws RequestNotValidException, ResearchGroupAlreadyExists;
+    SuspendResearchGroupResponse suspendResearchGroup(SuspendResearchGroupRequest suspendResearchGroupRequest) throws RequestNotValidException, ResearchGroupAlreadySuspended;
 }
