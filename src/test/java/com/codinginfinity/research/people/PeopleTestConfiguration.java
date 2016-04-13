@@ -23,6 +23,11 @@ public class PeopleTestConfiguration {
     private static final Logger logger = (Logger) LoggerFactory.getLogger(PeopleTestConfiguration.class);
 
     @Bean
+    public PeopleMock peopleMock() {
+        return new PeopleMock();
+    }
+
+    @Bean
     public CallLoggingAspect callLoggingAspect()
     {
         return new CallLoggingAspect();
