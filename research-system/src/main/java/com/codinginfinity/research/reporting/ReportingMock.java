@@ -9,12 +9,20 @@ import com.codinginfinity.research.services.RequestNotValidException;
 import com.codinginfinity.research.services.mocking.BaseMock;
 import com.codinginfinity.research.services.mocking.Mock;
 import net.sf.jasperreports.engine.*;
+import org.springframework.core.env.SystemEnvironmentPropertySource;
+import org.springframework.stereotype.Service;
 
+import javax.ejb.Stateless;
+import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 
 /**
  * Created by Rohan on 2016/04/13.
  */
+
+@Stateless
+@Service
 public class ReportingMock extends BaseMock implements IReporting {
 
     public ReportingMock() {
@@ -32,13 +40,15 @@ public class ReportingMock extends BaseMock implements IReporting {
             throw new InvalidPeriodException();
 
         try {
-            JasperReport jasperReport = JasperCompileManager.compileReport("templates/acc_report.jrxml");
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap() ,new  JREmptyDataSource());
+            JasperReport jasperReport = JasperCompileManager.compileReport(new File(".").getCanonicalPath() + "/src/main/java/com/codinginfinity/research/reporting/templates/acc_report.jrxml");
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap<>(), new  JREmptyDataSource());
             return new GetAccreditationUnitReportResponse(JasperExportManager.exportReportToXml(jasperPrint));
         }
 
-        catch(JRException j) {
+        catch(Exception j) {
         }
+
 
         return null;
     }
@@ -51,12 +61,12 @@ public class ReportingMock extends BaseMock implements IReporting {
             throw new RequestNotValidException();
 
         try {
-            JasperReport jasperReport = JasperCompileManager.compileReport("templates/progress_report.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport(new File(".").getCanonicalPath() + "/src/main/java/com/codinginfinity/research/reporting/templates/progress_report.jrxml");
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap() ,new  JREmptyDataSource());
             return new GetProgressReportResponse(JasperExportManager.exportReportToXml(jasperPrint));
         }
 
-        catch(JRException j) {
+        catch(Exception j) {
         }
 
         return null;
