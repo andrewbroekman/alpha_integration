@@ -7,13 +7,15 @@ import com.codinginfinity.research.services.Response;
  */
 public class GetProgressReportResponse implements Response {
 
+    private static final long serialVersionUID = -4226783121817599116L;
+
     private String reportString;
 
     public GetProgressReportResponse(String reportString) {
         this.reportString = reportString;
     }
 
-    public String getReportString() {
+    public String getResponseString() {
         return reportString;
     }
 

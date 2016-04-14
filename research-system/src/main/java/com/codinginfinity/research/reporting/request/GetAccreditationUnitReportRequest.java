@@ -13,6 +13,8 @@ import javax.validation.constraints.NotNull;
  */
 public class GetAccreditationUnitReportRequest implements Request {
 
+    private static final long serialVersionUID = -4377781121815491116L;
+
     private Entity entity;
     private PublicationType type;
     private LifeCycleState state;

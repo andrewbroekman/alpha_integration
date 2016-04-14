@@ -9,6 +9,8 @@ import com.codinginfinity.research.services.Request;
  */
 public class GetProgressReportRequest implements Request {
 
+    private static final long serialVersionUID = 1356789921817499666L;
+
     private Entity entity;
     private PublicationType type;
 
