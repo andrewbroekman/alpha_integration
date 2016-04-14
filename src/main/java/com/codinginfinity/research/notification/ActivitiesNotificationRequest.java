@@ -11,4 +11,12 @@ public class ActivitiesNotificationRequest extends UserNotificationRequest {
 
     @NotNull
     private long publication;
+
+    public long getPublication() {
+        return publication;
+    }
+
+    public void setPublication(long publication) {
+        this.publication = publication;
+    }
 }
