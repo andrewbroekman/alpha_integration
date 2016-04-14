@@ -1,6 +1,9 @@
 package com.codinginfinity.research.publication;
 
 
+import com.codinginfinity.research.notification.exceptions.EmailInvalidException;
+import com.codinginfinity.research.notification.exceptions.InvalidDateException;
+import com.codinginfinity.research.notification.exceptions.SendEmailFailedException;
 import com.codinginfinity.research.publication.exception.GroupDoesNotExist;
 import com.codinginfinity.research.publication.exception.PersonDoesNotExist;
 import com.codinginfinity.research.publication.exception.PublicationTypeExistsException;
@@ -98,7 +101,9 @@ public class PublicationTest {
 
     //ChangePublicationStateResponse
     @Test
-    public void changePublicationValid() throws AlreadyPublishedException, PublicationDoesntExist, RequestNotValidException {
+    public void changePublicationValid()
+            throws AlreadyPublishedException, PublicationDoesntExist, RequestNotValidException, InvalidDateException,
+            EmailInvalidException, SendEmailFailedException{
         PublicationState state = createPublicationMock().getStateEntries().get(0);
         ChangePublicationStateRequest req = new  ChangePublicationStateRequest(state, 55);
         publicationMock.changePublicationState(req);
@@ -106,21 +111,27 @@ public class PublicationTest {
     }
 
     @Test(expected = PublicationDoesntExist.class)
-    public void changePublicationThatDoesntExist() throws AlreadyPublishedException, PublicationDoesntExist, RequestNotValidException {
+    public void changePublicationThatDoesntExist()
+            throws AlreadyPublishedException, PublicationDoesntExist, RequestNotValidException, InvalidDateException,
+            EmailInvalidException, SendEmailFailedException {
         PublicationState state = createPublicationMock().getStateEntries().get(0);
         ChangePublicationStateRequest req = new  ChangePublicationStateRequest(state, 999);
         publicationMock.changePublicationState(req);
     }
 
     @Test(expected = RequestNotValidException.class)
-    public void changeInvalidPublication() throws AlreadyPublishedException, PublicationDoesntExist, RequestNotValidException {
+    public void changeInvalidPublication()
+            throws AlreadyPublishedException, PublicationDoesntExist, RequestNotValidException, InvalidDateException,
+            EmailInvalidException, SendEmailFailedException {
         PublicationState state = createPublicationMock().getStateEntries().get(0);
         ChangePublicationStateRequest req = new  ChangePublicationStateRequest(state, -1);
         publicationMock.changePublicationState(req);
     }
 
     @Test(expected = AlreadyPublishedException.class)
-    public void changePublicationThatIsAlreadyPublished() throws AlreadyPublishedException, PublicationDoesntExist, RequestNotValidException {
+    public void changePublicationThatIsAlreadyPublished()
+            throws AlreadyPublishedException, PublicationDoesntExist, RequestNotValidException, InvalidDateException,
+            EmailInvalidException, SendEmailFailedException {
         PublicationState state = createPublicationMock().getStateEntries().get(0);
         state.setLifeCycleState(new Published());
         ChangePublicationStateRequest req = new  ChangePublicationStateRequest(state, 55);
