@@ -4,10 +4,7 @@ package com.codinginfinity.research.people;
 import com.codinginfinity.research.people.defaultImpl.People;
 import com.codinginfinity.research.people.exeptions.*;
 import com.codinginfinity.research.people.request.*;
-import com.codinginfinity.research.people.response.AddPersonResponse;
-import com.codinginfinity.research.people.response.AddResearcherCategoryResponse;
-import com.codinginfinity.research.people.response.EditPersonDetailsResponse;
-import com.codinginfinity.research.people.response.ModifyResearcherCategoryResponse;
+import com.codinginfinity.research.people.response.*;
 import com.codinginfinity.research.services.RequestNotValidException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -150,19 +147,38 @@ public class PeopleTest {
 
     @Test
     public void addResearchGroup() throws Exception{
-        peopleMock.setState(PeopleMock.State.invalidResearchGroup);
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
         Group g = createCirg();
         AddResearchGroupRequest req = new AddResearchGroupRequest(g);
-        peopleMock.addResearchGroup(req);
+        AddResearchGroupResponse resp = peopleMock.addResearchGroup(req);
+        assert true;
     }
 
-    @Test(expected = RequestNotValidException.class)
+    @Test(expected = ResearchGroupAlreadyExists.class)
     public void addResearchGroupInvalidRequest() throws Exception{
         peopleMock.setState(PeopleMock.State.invalidResearchGroup);
         Group g = createCirg();
         g.setName("Not CIRG");
         AddResearchGroupRequest req = new AddResearchGroupRequest(g);
         peopleMock.addResearchGroup(req);
+    }
+
+    @Test
+    public void suspendResearchGroup() throws Exception{
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
+        Group g = createCirg();
+        SuspendResearchGroupRequest req = new SuspendResearchGroupRequest(g);
+        peopleMock.suspendResearchGroup(req);
+        assert true;
+    }
+
+    @Test(expected = ResearchGroupAlreadySuspended.class)
+    public void suspendResearchGroupInvalidRequest() throws Exception{
+        peopleMock.setState(PeopleMock.State.researchGroupAlreadySuspended);
+        Group g = createCirg();
+        g.setActive(false);
+        SuspendResearchGroupRequest req = new SuspendResearchGroupRequest(g);
+        peopleMock.suspendResearchGroup(req);
     }
 
 
