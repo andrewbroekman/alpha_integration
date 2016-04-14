@@ -1,5 +1,7 @@
 package com.codinginfinity.research.notification;
 
+import com.codinginfinity.research.people.User;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -11,4 +13,16 @@ public class UserNotificationRequest extends NotificationRequest{
 
     @NotNull
     private long user;
+
+    public long getUser() {
+
+        return user;
+
+    }
+
+    public void setUser(long user) {
+
+        this.user = user;
+
+    }
 }

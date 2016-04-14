@@ -17,4 +17,28 @@ public class Schedule extends BaseEntity {
 
     public Schedule() {
     }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public RepeatRequest getRepeatRequest() {
+        return repeatRequest;
+    }
+
+    public void setRepeatRequest(RepeatRequest repeatRequest) {
+        this.repeatRequest = repeatRequest;
+    }
 }
