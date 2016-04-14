@@ -1,9 +1,6 @@
 package com.codinginfinity.research.publication;
 
-import com.codinginfinity.research.publication.exception.AlreadyPublishedException;
-import com.codinginfinity.research.publication.exception.PublicationDoesntExist;
-import com.codinginfinity.research.publication.exception.PublicationTypeExistsException;
-import com.codinginfinity.research.publication.exception.PublicationWithTitleExistsForAuthorsException;
+import com.codinginfinity.research.publication.exception.*;
 import com.codinginfinity.research.publication.lifecycle.InProgress;
 import com.codinginfinity.research.publication.lifecycle.Published;
 import com.codinginfinity.research.publication.request.*;
@@ -191,17 +188,28 @@ public class PublicationMock extends BaseMock implements IPublication {
     }
 
     @Override
-    public CalcAccreditationPointsForPersonResponse calcAccreditationPointsForPerson(CalcAccreditationPointsForPersonRequest calcAccreditationPointsForPersonRequest) throws RequestNotValidException {
+    public CalcAccreditationPointsForPersonResponse calcAccreditationPointsForPerson(CalcAccreditationPointsForPersonRequest calcAccreditationPointsForPersonRequest) throws RequestNotValidException, PersonDoesNotExist {
 
         serviceValidationUtilities.validateRequest(CalcAccreditationPointsForPersonRequest.class, calcAccreditationPointsForPersonRequest);
-        return null;
+        if(calcAccreditationPointsForPersonRequest.getPerson() < 0)
+            throw new RequestNotValidException();
+
+        if(calcAccreditationPointsForPersonRequest.getPerson() != 111)
+            throw new PersonDoesNotExist();
+
+        return new CalcAccreditationPointsForPersonResponse(10);
     }
 
     @Override
-    public CalcAccreditationPointsForGroupResponse calcAccreditationPointsForGroup(CalcAccreditationPointsForGroupRequest calcAccreditationPointsForGroupRequest) throws RequestNotValidException {
+    public CalcAccreditationPointsForGroupResponse calcAccreditationPointsForGroup(CalcAccreditationPointsForGroupRequest calcAccreditationPointsForGroupRequest) throws RequestNotValidException, GroupDoesNotExist {
 
         serviceValidationUtilities.validateRequest(CalcAccreditationPointsForGroupRequest.class, calcAccreditationPointsForGroupRequest);
-        return null;
+        if(calcAccreditationPointsForGroupRequest.getGroup() < 0)
+            throw new RequestNotValidException();
+        if(calcAccreditationPointsForGroupRequest.getGroup() != 222)
+            throw new GroupDoesNotExist();
+
+        return new CalcAccreditationPointsForGroupResponse(26);
     }
 
     private static Publication createNormalPublication() {
