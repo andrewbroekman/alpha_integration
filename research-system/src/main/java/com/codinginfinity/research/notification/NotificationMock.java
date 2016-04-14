@@ -11,6 +11,11 @@ import com.codinginfinity.research.notification.response.SendActivityNotificatio
 import com.codinginfinity.research.notification.response.SendBroadcastNotificationResponse;
 import com.codinginfinity.research.notification.response.SendReminderResponse;
 import com.codinginfinity.research.notification.response.SendReportNotificationResponse;
+import com.codinginfinity.research.people.EmailAddress;
+import com.codinginfinity.research.people.Person;
+import com.codinginfinity.research.people.response.EditPersonDetailsResponse;
+import com.codinginfinity.research.publication.Publication;
+import com.codinginfinity.research.publication.PublicationDetails;
 import com.codinginfinity.research.services.RequestNotValidException;
 import com.codinginfinity.research.services.mocking.BaseMock;
 import com.codinginfinity.research.services.mocking.Mock;
@@ -19,6 +24,19 @@ import org.springframework.stereotype.Service;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Properties;
+
 
 /**
  * Created by Claudio on 2016/04/14.
@@ -45,8 +63,15 @@ public class NotificationMock extends BaseMock implements INotification {
             throw new SendEmailFailedException();
         else
         {
-            // SendEmail
-            return null;
+            Person p = new Person("Claudio", "Da Silva", new EmailAddress("c.m.dasilva@live.co.za"));
+            PublicationDetails pub = new PublicationDetails("Neural networks paper", LocalDate.parse("2016-08-15",
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+
+            String subjectLine = "Activity on " + pub.getTitle() + "(" + LocalDateTime.now() +")";
+            sendEmail(p.getFirstName() + " " + p.getSurname(), p.getPrimaryEmail().getAddress(),
+                    subjectLine,"Testing message");
+
+            return new SendActivityNotificationResponse();
         }
 
     }
@@ -64,7 +89,7 @@ public class NotificationMock extends BaseMock implements INotification {
         else
         {
             // SendEmail
-            return null;
+            return new SendReportNotificationResponse();
         }
 
     }
@@ -82,7 +107,7 @@ public class NotificationMock extends BaseMock implements INotification {
         else
         {
             // SendEmail
-            return null;
+            return new SendBroadcastNotificationResponse();
         }
 
     }
@@ -100,9 +125,56 @@ public class NotificationMock extends BaseMock implements INotification {
         else
         {
             // SendEmail
-            return null;
+            return new SendReminderResponse();
         }
 
+    }
+
+    public boolean sendEmail(String name, String recipient, String subject, String body)
+    {
+
+        String mailFrom = "alphaintegrationteam@gmail.com";
+
+        try
+        {
+
+            Properties properties = System.getProperties();
+            properties.put("mail.smtp.starttls.enable", "true");
+            properties.put("mail.smtp.starttls.required", "true");
+            properties.put("mail.smtp.auth", "true");
+            properties.setProperty("mail.smtp.host", "smtp.gmail.com");
+
+            MimeMessage message = new MimeMessage( Session.getDefaultInstance(properties,
+                    new javax.mail.Authenticator(){
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(
+                                    mailFrom, "alphaintegrate");
+                        }
+                    }));
+
+            message.setFrom(new InternetAddress(mailFrom));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+            message.setSubject(subject);
+            message.setContent(message, "text/html; charset=utf-8");
+            message.setSentDate(new Date());
+
+            Transport.send(message);
+
+        }
+        catch (AddressException e)
+        {
+            return false;
+        }
+        catch (javax.mail.MessagingException e)
+        {
+            return false;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+        return true;
     }
 
     public enum State implements Mock.State{externalRequirementsMet, EmailInvalidException, InvalidDateException, SendEmailFailedException}
