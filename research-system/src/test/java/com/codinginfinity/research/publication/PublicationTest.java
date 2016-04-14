@@ -215,15 +215,27 @@ public class PublicationTest {
         PublicationTypeState p = new PublicationTypeState(LocalDate.of(2016, Month.APRIL, 14));
         p.setId(25);
         req.addStateEntry(p);
-        AddPublicationTypeResponse resp = publicationMock.addPublicationType(req);
+            AddPublicationTypeResponse resp = publicationMock.addPublicationType(req);
     }
 
     //GetPublicationType
     @Test
     public void getPublicationTypeForNormalType() throws RequestNotValidException, PublicationTypeDoesntExist {
-        GetPublicationTypeRequest req = new GetPublicationTypeRequest();
+        GetPublicationTypeRequest req = new GetPublicationTypeRequest(89);
         GetPublicationTypeResponse resp = publicationMock.getPublicationType(req);
-        assert resp.equals("e-journal");
+        assert resp.getPublicationType().getName().equals("e-journal");
+    }
+
+    @Test (expected = PublicationTypeDoesntExist.class)
+    public void getPublicationTypeForNonExistentPublicationType() throws RequestNotValidException, PublicationTypeDoesntExist {
+        GetPublicationTypeRequest req = new GetPublicationTypeRequest(6);
+        GetPublicationTypeResponse resp = publicationMock.getPublicationType(req);
+    }
+
+    @Test (expected = RequestNotValidException.class)
+    public void getPublicationTypeForInvalidPublicationType() throws RequestNotValidException, PublicationTypeDoesntExist {
+        GetPublicationTypeRequest req = new GetPublicationTypeRequest(-1);
+        GetPublicationTypeResponse resp = publicationMock.getPublicationType(req);
     }
 
     public Date createOlderDate(){
