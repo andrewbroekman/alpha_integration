@@ -89,10 +89,18 @@ public class PublicationMock extends BaseMock implements IPublication {
     }
 
     @Override
-    public ChangePublicationStateResponse changePublicationState(ChangePublicationStateRequest changePublicationStateRequest) throws RequestNotValidException {
+    public ChangePublicationStateResponse changePublicationState(ChangePublicationStateRequest changePublicationStateRequest) throws RequestNotValidException, PublicationDoesntExist {
 
         serviceValidationUtilities.validateRequest(ChangePublicationStateRequest.class, changePublicationStateRequest);
-        return null;
+        if (changePublicationStateRequest.getModifiedPublication() < 0)
+            throw new RequestNotValidException();
+
+        if (changePublicationStateRequest.getModifiedPublication() != 55)
+            throw new PublicationDoesntExist();
+
+        Publication publication = createNormalPublication();
+        publication.addStateEntry(changePublicationStateRequest.getPublicationToModify());
+        return new ChangePublicationStateResponse(changePublicationStateRequest.getModifiedPublication(), publication);
     }
 
     @Override

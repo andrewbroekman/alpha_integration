@@ -13,6 +13,28 @@ public class ChangePublicationStateRequest implements Request {
     private PublicationState publicationToModify;
     private long modifiedPublication;
 
+    public PublicationState getPublicationToModify() {
+        return publicationToModify;
+    }
+
+    public void setPublicationToModify(PublicationState publicationToModify) {
+        this.publicationToModify = publicationToModify;
+    }
+
+    public long getModifiedPublication() {
+        return modifiedPublication;
+    }
+
+    public void setModifiedPublication(long modifiedPublication) {
+        this.modifiedPublication = modifiedPublication;
+    }
+
+    public ChangePublicationStateRequest(PublicationState publicationToModify, long modifiedPublication) {
+
+        this.publicationToModify = publicationToModify;
+        this.modifiedPublication = modifiedPublication;
+    }
+
     public ChangePublicationStateRequest() {
     }
 
