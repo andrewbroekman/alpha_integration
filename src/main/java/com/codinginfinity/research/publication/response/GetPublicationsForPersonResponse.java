@@ -3,6 +3,7 @@ package com.codinginfinity.research.publication.response;
 import com.codinginfinity.research.services.Response;
 import com.codinginfinity.research.publication.Publication;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -15,5 +16,10 @@ public class GetPublicationsForPersonResponse implements Response {
     private List<Publication> matchingPublications;
 
     public GetPublicationsForPersonResponse() {
+        matchingPublications = new LinkedList<Publication>();
+    }
+
+    public void addPublication(Publication publication){
+        matchingPublications.add(publication);
     }
 }

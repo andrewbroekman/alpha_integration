@@ -1,5 +1,6 @@
 package com.codinginfinity.research.publication;
 
+import com.codinginfinity.research.publication.exception.AlreadyPublishedException;
 import com.codinginfinity.research.publication.exception.PublicationDoesntExist;
 import com.codinginfinity.research.publication.exception.PublicationTypeExistsException;
 import com.codinginfinity.research.publication.exception.PublicationWithTitleExistsForAuthorsException;
@@ -16,7 +17,7 @@ public interface IPublication {
     AddPublicationResponse addPublication(AddPublicationRequest addPublicationRequest) throws RequestNotValidException, PublicationWithTitleExistsForAuthorsException;
     GetPublicationResponse getPublication(GetPublicationRequest getPublicationRequest) throws RequestNotValidException, PublicationDoesntExist;
     CreatePublicationResponse createPublication(CreatePublicationRequest createPublicationRequest) throws RequestNotValidException;
-    ChangePublicationStateResponse changePublicationState(ChangePublicationStateRequest changePublicationStateRequest) throws RequestNotValidException, PublicationDoesntExist;
+    ChangePublicationStateResponse changePublicationState(ChangePublicationStateRequest changePublicationStateRequest) throws RequestNotValidException, PublicationDoesntExist, AlreadyPublishedException;
     AddPublicationTypeResponse addPublicationType(AddPublicationTypeRequest addPublicationTypeRequest) throws RequestNotValidException, PublicationTypeExistsException;
     GetPublicationTypeResponse getPublicationType(GetPublicationTypeRequest getPublicationTypeRequest) throws RequestNotValidException, PublicationTypeDoesntExist;
     ModifyPublicationTypeResponse modifyPublicationType(ModifyPublicationTypeRequest modifyPublicationTypeRequest) throws RequestNotValidException;

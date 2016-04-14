@@ -1,9 +1,11 @@
 package com.codinginfinity.research.publication;
 
+import com.codinginfinity.research.publication.exception.AlreadyPublishedException;
 import com.codinginfinity.research.publication.exception.PublicationDoesntExist;
 import com.codinginfinity.research.publication.exception.PublicationTypeExistsException;
 import com.codinginfinity.research.publication.exception.PublicationWithTitleExistsForAuthorsException;
 import com.codinginfinity.research.publication.lifecycle.InProgress;
+import com.codinginfinity.research.publication.lifecycle.Published;
 import com.codinginfinity.research.publication.request.*;
 import com.codinginfinity.research.publication.response.*;
 import com.codinginfinity.research.publication.type.Active;
@@ -90,7 +92,7 @@ public class PublicationMock extends BaseMock implements IPublication {
     }
 
     @Override
-    public ChangePublicationStateResponse changePublicationState(ChangePublicationStateRequest changePublicationStateRequest) throws RequestNotValidException, PublicationDoesntExist {
+    public ChangePublicationStateResponse changePublicationState(ChangePublicationStateRequest changePublicationStateRequest) throws RequestNotValidException, PublicationDoesntExist, AlreadyPublishedException {
 
         serviceValidationUtilities.validateRequest(ChangePublicationStateRequest.class, changePublicationStateRequest);
         if (changePublicationStateRequest.getModifiedPublication() < 0)
@@ -99,15 +101,11 @@ public class PublicationMock extends BaseMock implements IPublication {
         if (changePublicationStateRequest.getModifiedPublication() != 55)
             throw new PublicationDoesntExist();
 
+        if(changePublicationStateRequest.getPublicationToModify().getLifeCycleState() instanceof Published)
+            throw new AlreadyPublishedException();
+
         Publication publication = createNormalPublication();
-
-        assert publication.getStateEntries().size() == 1;
-
         publication.addStateEntry(changePublicationStateRequest.getPublicationToModify());
-
-        assert publication.getStateEntries().size() == 2;
-        assert publication.getStateEntries().get(0).getDate().isBefore(publication.getStateEntries().get(1).getDate());
-
         return new ChangePublicationStateResponse(changePublicationStateRequest.getModifiedPublication(), publication);
     }
 
@@ -150,9 +148,8 @@ public class PublicationMock extends BaseMock implements IPublication {
 
     @Override
     public ModifyPublicationTypeResponse modifyPublicationType(ModifyPublicationTypeRequest modifyPublicationTypeRequest) throws RequestNotValidException {
-
         serviceValidationUtilities.validateRequest(ModifyPublicationTypeRequest.class, modifyPublicationTypeRequest);
-
+        
         PublicationType publicationType = createNormalPublicationType();
 
         int lastStateEntry = publicationType.getStateEntry().size() - 1;
@@ -168,14 +165,29 @@ public class PublicationMock extends BaseMock implements IPublication {
     public GetPublicationsForPersonResponse getPublicationsForPerson(GetPublicationsForPersonRequest getPublicationsForPersonRequest) throws RequestNotValidException {
 
         serviceValidationUtilities.validateRequest(GetPublicationsForPersonRequest.class, getPublicationsForPersonRequest);
-        return null;
+        if(getPublicationsForPersonRequest.getPerson() < 0)
+            throw new RequestNotValidException();
+
+        if(getPublicationsForPersonRequest.getPerson() != 111)
+            return new GetPublicationsForPersonResponse(); //no responses
+        GetPublicationsForPersonResponse resp = new GetPublicationsForPersonResponse();
+        resp.addPublication(createNormalPublication());
+        return resp;
     }
 
     @Override
     public GetPublicationsForGroupResponse getPublicationsForGroup(GetPublicationsForGroupRequest getPublicationsForGroupRequest) throws RequestNotValidException {
 
         serviceValidationUtilities.validateRequest(GetPublicationsForGroupRequest.class, getPublicationsForGroupRequest);
-        return null;
+        if(getPublicationsForGroupRequest.getGroup() < 0)
+            throw new RequestNotValidException();
+
+        if(getPublicationsForGroupRequest.getGroup() != 222)
+            return new GetPublicationsForGroupResponse();
+
+        GetPublicationsForGroupResponse resp = new GetPublicationsForGroupResponse();
+        resp.addPublication(createNormalPublication());
+        return resp;
     }
 
     @Override
