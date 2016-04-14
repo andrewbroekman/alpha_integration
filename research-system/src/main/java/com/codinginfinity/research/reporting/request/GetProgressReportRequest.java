@@ -4,8 +4,6 @@ import com.codinginfinity.research.people.Entity;
 import com.codinginfinity.research.publication.type.PublicationType;
 import com.codinginfinity.research.services.Request;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * Created by Rohan on 2016/04/13.
  */

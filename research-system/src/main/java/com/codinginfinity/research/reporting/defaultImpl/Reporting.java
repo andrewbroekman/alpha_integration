@@ -1,8 +1,10 @@
 package com.codinginfinity.research.reporting.defaultImpl;
 
 import com.codinginfinity.research.reporting.IReporting;
-import com.codinginfinity.research.reporting.request.*;
-import com.codinginfinity.research.reporting.response.*;
+import com.codinginfinity.research.reporting.request.GetAccreditationUnitReportRequest;
+import com.codinginfinity.research.reporting.request.GetProgressReportRequest;
+import com.codinginfinity.research.reporting.response.GetAccreditationUnitReportResponse;
+import com.codinginfinity.research.reporting.response.GetProgressReportResponse;
 
 /**
  * Created by Rohan on 2016/04/13.

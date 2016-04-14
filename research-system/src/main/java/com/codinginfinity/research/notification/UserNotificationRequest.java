@@ -1,7 +1,5 @@
 package com.codinginfinity.research.notification;
 
-import com.codinginfinity.research.people.User;
-
 import javax.validation.constraints.NotNull;
 
 /**

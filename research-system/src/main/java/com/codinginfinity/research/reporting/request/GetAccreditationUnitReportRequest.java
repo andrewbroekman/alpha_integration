@@ -2,8 +2,8 @@ package com.codinginfinity.research.reporting.request;
 
 import com.codinginfinity.research.people.Entity;
 import com.codinginfinity.research.publication.Period;
+import com.codinginfinity.research.publication.lifecycle.LifeCycleState;
 import com.codinginfinity.research.publication.type.PublicationType;
-import com.codinginfinity.research.publication.lifecycle.*;
 import com.codinginfinity.research.services.Request;
 
 import javax.validation.constraints.NotNull;

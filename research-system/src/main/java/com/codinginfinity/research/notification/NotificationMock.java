@@ -11,7 +11,6 @@ import com.codinginfinity.research.notification.response.SendActivityNotificatio
 import com.codinginfinity.research.notification.response.SendBroadcastNotificationResponse;
 import com.codinginfinity.research.notification.response.SendReminderResponse;
 import com.codinginfinity.research.notification.response.SendReportNotificationResponse;
-import com.codinginfinity.research.people.response.EditPersonDetailsResponse;
 import com.codinginfinity.research.services.RequestNotValidException;
 import com.codinginfinity.research.services.mocking.BaseMock;
 import com.codinginfinity.research.services.mocking.Mock;

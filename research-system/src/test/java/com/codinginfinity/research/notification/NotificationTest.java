@@ -1,6 +1,5 @@
 package com.codinginfinity.research.notification;
 
-import com.codinginfinity.research.notification.defaultImpl.Notification;
 import com.codinginfinity.research.notification.exceptions.EmailInvalidException;
 import com.codinginfinity.research.notification.exceptions.InvalidDateException;
 import com.codinginfinity.research.notification.exceptions.SendEmailFailedException;
@@ -8,9 +7,6 @@ import com.codinginfinity.research.notification.request.SendActivityNotification
 import com.codinginfinity.research.notification.request.SendBroadcastNotificationRequest;
 import com.codinginfinity.research.notification.request.SendReminderRequest;
 import com.codinginfinity.research.notification.request.SendReportNotificationRequest;
-import com.codinginfinity.research.people.EmailAddress;
-import com.codinginfinity.research.people.Person;
-import com.codinginfinity.research.people.User;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +18,6 @@ import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by andrew on 2016/04/11.

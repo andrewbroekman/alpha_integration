@@ -1,21 +1,16 @@
 package com.codinginfinity.research.reporting;
 
-import com.codinginfinity.research.reporting.request.*;
-import com.codinginfinity.research.reporting.response.*;
+import com.codinginfinity.research.reporting.exceptions.InvalidPeriodException;
+import com.codinginfinity.research.reporting.request.GetAccreditationUnitReportRequest;
+import com.codinginfinity.research.reporting.request.GetProgressReportRequest;
+import com.codinginfinity.research.reporting.response.GetAccreditationUnitReportResponse;
+import com.codinginfinity.research.reporting.response.GetProgressReportResponse;
 import com.codinginfinity.research.services.RequestNotValidException;
 import com.codinginfinity.research.services.mocking.BaseMock;
 import com.codinginfinity.research.services.mocking.Mock;
-import com.codinginfinity.research.reporting.exceptions.*;
-import com.codinginfinity.research.validation.beanvalidation.services.ServiceValidationUtilities;
-import org.springframework.stereotype.Service;
-
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import java.util.HashMap;
-
 import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.JRXlsExporter;
+
+import java.util.HashMap;
 
 /**
  * Created by Rohan on 2016/04/13.

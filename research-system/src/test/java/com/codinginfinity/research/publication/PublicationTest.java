@@ -1,10 +1,10 @@
 package com.codinginfinity.research.publication;
 
 
-import com.codinginfinity.research.publication.exception.PublicationWithTitleExistsForAuthorsException;
-import com.codinginfinity.research.publication.lifecycle.InProgress;
 import com.codinginfinity.research.publication.exception.GroupDoesNotExist;
 import com.codinginfinity.research.publication.exception.PersonDoesNotExist;
+import com.codinginfinity.research.publication.exception.PublicationWithTitleExistsForAuthorsException;
+import com.codinginfinity.research.publication.lifecycle.InProgress;
 import com.codinginfinity.research.publication.request.AddPublicationRequest;
 import com.codinginfinity.research.publication.request.CalcAccreditationPointsForGroupRequest;
 import com.codinginfinity.research.publication.request.CalcAccreditationPointsForPersonRequest;
@@ -13,7 +13,6 @@ import com.codinginfinity.research.publication.response.CalcAccreditationPointsF
 import com.codinginfinity.research.publication.response.CalcAccreditationPointsForPersonResponse;
 import com.codinginfinity.research.publication.response.GetPublicationsForPersonResponse;
 import com.codinginfinity.research.services.RequestNotValidException;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.context.annotation.ComponentScan;
@@ -21,10 +20,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
-
-import java.time.LocalDate;
-
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 
