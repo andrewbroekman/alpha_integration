@@ -1,18 +1,21 @@
 package com.codinginfinity.research.publication;
 
 
-import com.codinginfinity.research.publication.exception.GroupDoesNotExist;
-import com.codinginfinity.research.publication.exception.PersonDoesNotExist;
-import com.codinginfinity.research.publication.exception.PublicationWithTitleExistsForAuthorsException;
+import com.codinginfinity.research.publication.exception.*;
 import com.codinginfinity.research.publication.lifecycle.InProgress;
+import com.codinginfinity.research.publication.lifecycle.Published;
 import com.codinginfinity.research.publication.request.AddPublicationRequest;
 import com.codinginfinity.research.publication.request.CalcAccreditationPointsForGroupRequest;
 import com.codinginfinity.research.publication.request.CalcAccreditationPointsForPersonRequest;
 import com.codinginfinity.research.publication.request.GetPublicationsForPersonRequest;
-import com.codinginfinity.research.publication.response.CalcAccreditationPointsForGroupResponse;
-import com.codinginfinity.research.publication.response.CalcAccreditationPointsForPersonResponse;
-import com.codinginfinity.research.publication.response.GetPublicationsForPersonResponse;
+import com.codinginfinity.research.publication.exception.PublicationWithTitleExistsForAuthorsException;
+import com.codinginfinity.research.publication.lifecycle.InProgress;
+import com.codinginfinity.research.publication.exception.GroupDoesNotExist;
+import com.codinginfinity.research.publication.exception.PersonDoesNotExist;
+import com.codinginfinity.research.publication.request.*;
+import com.codinginfinity.research.publication.response.*;
 import com.codinginfinity.research.services.RequestNotValidException;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.context.annotation.ComponentScan;
@@ -31,7 +34,6 @@ import java.util.Date;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PublicationTest.class})
 @ComponentScan("com.codinginfinity.research")
-@Ignore
 public class PublicationTest {
 
     @Inject
@@ -55,6 +57,62 @@ public class PublicationTest {
         publicationMock.addPublication(req);
     }
 
+    //GetPublication
+    @Test
+    public void getValidPublication() throws RequestNotValidException, PublicationDoesntExist {
+        GetPublicationRequest req = new GetPublicationRequest();
+        req.setPublication(55);
+        GetPublicationResponse resp = publicationMock.getPublication(req);
+        assert true;
+    }
+
+    @Test(expected = PublicationDoesntExist.class)
+    public void getPublicationThatDoesntExist() throws RequestNotValidException, PublicationDoesntExist {
+        GetPublicationRequest req = new GetPublicationRequest();
+        publicationMock.getPublication(req);
+    }
+
+    //CreatePublicationResponse
+
+    @Test
+    public void createValidPublication() throws RequestNotValidException {
+        PublicationState state = createPublicationMock().getStateEntries().get(0);
+        CreatePublicationRequest req = new CreatePublicationRequest(state);
+        publicationMock.createPublication(req);
+        assert true;
+    }
+
+    //ChangePublicationStateResponse
+    @Test
+    public void changePublicationValid() throws AlreadyPublishedException, PublicationDoesntExist, RequestNotValidException {
+        PublicationState state = createPublicationMock().getStateEntries().get(0);
+        ChangePublicationStateRequest req = new  ChangePublicationStateRequest(state, 55);
+        publicationMock.changePublicationState(req);
+        assert true;
+    }
+
+    @Test(expected = PublicationDoesntExist.class)
+    public void changePublicationThatDoesntExist() throws AlreadyPublishedException, PublicationDoesntExist, RequestNotValidException {
+        PublicationState state = createPublicationMock().getStateEntries().get(0);
+        ChangePublicationStateRequest req = new  ChangePublicationStateRequest(state, 999);
+        publicationMock.changePublicationState(req);
+    }
+
+    @Test(expected = RequestNotValidException.class)
+    public void changeInvalidPublication() throws AlreadyPublishedException, PublicationDoesntExist, RequestNotValidException {
+        PublicationState state = createPublicationMock().getStateEntries().get(0);
+        ChangePublicationStateRequest req = new  ChangePublicationStateRequest(state, -1);
+        publicationMock.changePublicationState(req);
+    }
+
+    @Test(expected = AlreadyPublishedException.class)
+    public void changePublicationThatIsAlreadyPublished() throws AlreadyPublishedException, PublicationDoesntExist, RequestNotValidException {
+        PublicationState state = createPublicationMock().getStateEntries().get(0);
+        state.setLifeCycleState(new Published());
+        ChangePublicationStateRequest req = new  ChangePublicationStateRequest(state, 55);
+        publicationMock.changePublicationState(req);
+    }
+    
 
     //calcAccreditationPointsForPerson
     @Test(expected = RequestNotValidException.class)

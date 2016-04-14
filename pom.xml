@@ -247,6 +247,13 @@
             <version>${springframework.version}</version>
         </dependency>
 
+        <!-- JavaMail Library -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4</version>
+        </dependency>
+
     </dependencies>
 
     <!-- Repository definitions -->
