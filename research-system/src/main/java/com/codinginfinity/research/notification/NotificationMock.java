@@ -97,13 +97,14 @@ public class NotificationMock extends BaseMock implements INotification {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             String subjectLine = "Report as of " + "(" + LocalDateTime.now().format(formatter) +")";
-            String svgXML = report.getProgressReportResponse(new GetProgressReportRequest()).getReportString();
+            String svgXML = report.getProgressReportResponse(new GetProgressReportRequest()).getResponseString();
+            System.out.println(svgXML);
 
             return new SendReportNotificationResponse(sendEmail(
                     p.getFirstName() + " " + p.getSurname(), p.getPrimaryEmail().getAddress(),
                     subjectLine,
                     createBody( "Report",
-                            reportingMock.getProgressReportResponse(new GetProgressReportRequest()).getReportString() )));
+                            reportingMock.getProgressReportResponse(new GetProgressReportRequest()).getResponseString() )));
         }
 
     }
@@ -135,7 +136,7 @@ public class NotificationMock extends BaseMock implements INotification {
                     p.getPrimaryEmail().getAddress() + "> on (" + LocalDateTime.now().format(formatter) +")";
 
             return new SendBroadcastNotificationResponse(sendEmail(
-                    p.getFirstName() + " " + p.getSurname(), subjectLine,
+                    p.getFirstName() + " " + p.getSurname(), p.getPrimaryEmail().getAddress(), subjectLine,
                     sendBroadcastNotificationRequest.getBroadcastNotificationRequest().getMessage(), pList));
         }
 
@@ -215,14 +216,15 @@ public class NotificationMock extends BaseMock implements INotification {
         return true;
     }
 
-    public boolean sendEmail(String name, String subject, String body, ArrayList<Person> pList)
+    public boolean sendEmail(String name, String sender, String subject, String body, ArrayList<Person> pList)
     {
         boolean success = false;
 
         while ( !pList.isEmpty() )
         {
             Person p = pList.remove(0);
-            sendEmail(name, p.getPrimaryEmail().getAddress(), subject, createBody("Broadcast notification", body) );
+            sendEmail(name, p.getPrimaryEmail().getAddress(), subject,
+                    createBody("Broadcast notification from " + name + " (" + sender + ")", body) );
         }
 
         return success;
