@@ -14,17 +14,17 @@ public class SendActivityNotificationResponse implements Response {
     private static final long serialVersionUID = 8212503469686352558L;
 
     @NotNull
-    private ActivitiesNotificationRequest activitiesNotificationRequest;
+    private boolean success;
 
-    public ActivitiesNotificationRequest getActivitiesNotificationRequest() {
-
-        return activitiesNotificationRequest;
-
+    public SendActivityNotificationResponse(boolean success) {
+        this.success = success;
     }
 
-    public void setActivitiesNotificationRequest(ActivitiesNotificationRequest activitiesNotificationRequest) {
+    public boolean isSuccess() {
+        return success;
+    }
 
-        this.activitiesNotificationRequest = activitiesNotificationRequest;
-
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 }

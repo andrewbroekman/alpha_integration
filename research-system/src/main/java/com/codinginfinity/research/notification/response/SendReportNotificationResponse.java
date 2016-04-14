@@ -14,17 +14,17 @@ public class SendReportNotificationResponse implements Response {
     private static final long serialVersionUID = 2240666298738577961L;
 
     @NotNull
-    private ReportNotificationRequest reportNotificationRequest;
+    private boolean success;
 
-    public ReportNotificationRequest getReportNotificationRequest() {
-
-        return reportNotificationRequest;
-
+    public SendReportNotificationResponse(boolean success) {
+        this.success = success;
     }
 
-    public void setReportNotificationRequest(ReportNotificationRequest reportNotificationRequest) {
+    public boolean isSuccess() {
+        return success;
+    }
 
-        this.reportNotificationRequest = reportNotificationRequest;
-
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 }

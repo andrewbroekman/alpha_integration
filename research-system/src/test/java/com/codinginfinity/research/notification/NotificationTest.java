@@ -25,7 +25,6 @@ import java.util.ArrayList;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {NotificationTest.class})
 @ComponentScan("com.codinginfinity.research")
-@Ignore
 public class NotificationTest {
 
     @Inject

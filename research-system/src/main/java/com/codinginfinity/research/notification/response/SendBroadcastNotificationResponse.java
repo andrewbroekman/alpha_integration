@@ -13,17 +13,17 @@ public class SendBroadcastNotificationResponse implements Response {
     private static final long serialVersionUID = 1372180569984221556L;
 
     @NotNull
-    private BroadcastNotificationRequest broadcastNotificationRequest;
+    private boolean success;
 
-    public BroadcastNotificationRequest getBroadcastNotificationRequest() {
-
-        return broadcastNotificationRequest;
-
+    public SendBroadcastNotificationResponse(boolean success) {
+        this.success = success;
     }
 
-    public void setBroadcastNotificationRequest(BroadcastNotificationRequest broadcastNotificationRequest) {
+    public boolean isSuccess() {
+        return success;
+    }
 
-        this.broadcastNotificationRequest = broadcastNotificationRequest;
-
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 }
