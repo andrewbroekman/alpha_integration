@@ -47,6 +47,7 @@ public class NotificationTest {
         ActivitiesNotificationRequest actNot = new ActivitiesNotificationRequest();
         actNot.setUser(u);
         actNot.setPublication(p);
+        actNot.setChanges("A new user was added for publication ");
 
         SendActivityNotificationRequest actReq =  new SendActivityNotificationRequest();
         actReq.setActivitiesNotificationRequest(actNot);
@@ -66,6 +67,7 @@ public class NotificationTest {
         ActivitiesNotificationRequest actNot = new ActivitiesNotificationRequest();
         actNot.setUser(u);
         actNot.setPublication(p);
+        actNot.setChanges("A new user was added for publication ");
 
         SendActivityNotificationRequest actReq =  new SendActivityNotificationRequest();
         actReq.setActivitiesNotificationRequest(actNot);
@@ -85,6 +87,7 @@ public class NotificationTest {
         ActivitiesNotificationRequest actNot = new ActivitiesNotificationRequest();
         actNot.setUser(u);
         actNot.setPublication(p);
+        actNot.setChanges("A new user was added for publication ");
 
         SendActivityNotificationRequest actReq =  new SendActivityNotificationRequest();
         actReq.setActivitiesNotificationRequest(actNot);

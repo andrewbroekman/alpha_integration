@@ -54,7 +54,9 @@ public class Notification implements INotification {
 
         return new SendActivityNotificationResponse( sendEmail(
                 p.getFirstName() + " " + p.getSurname(), p.getPrimaryEmail().getAddress(),
-                subjectLine,createBody("Activity update","Stuff changed")));
+                subjectLine,createBody("Activity update",
+                        sendActivityNotificationRequest.getActivitiesNotificationRequest().getChanges() +
+                pub.getTitle())));
     }
 
     @Override

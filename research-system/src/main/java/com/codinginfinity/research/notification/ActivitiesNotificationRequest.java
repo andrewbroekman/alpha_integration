@@ -11,6 +11,16 @@ public class ActivitiesNotificationRequest extends UserNotificationRequest {
 
     @NotNull
     private long publication;
+    @NotNull
+    private String changes;
+
+    public String getChanges() {
+        return changes;
+    }
+
+    public void setChanges(String changes) {
+        this.changes = changes;
+    }
 
     public long getPublication() {
         return publication;
