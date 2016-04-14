@@ -15,6 +15,30 @@ public class GetPublicationsForPersonRequest implements Request {
     private PublicationConfidenceLevel confidenceLevel;
     private Period publicationPeriod;
 
+    public long getPerson() {
+        return person;
+    }
+
+    public void setPerson(long person) {
+        this.person = person;
+    }
+
+    public PublicationConfidenceLevel getConfidenceLevel() {
+        return confidenceLevel;
+    }
+
+    public void setConfidenceLevel(PublicationConfidenceLevel confidenceLevel) {
+        this.confidenceLevel = confidenceLevel;
+    }
+
+    public Period getPublicationPeriod() {
+        return publicationPeriod;
+    }
+
+    public void setPublicationPeriod(Period publicationPeriod) {
+        this.publicationPeriod = publicationPeriod;
+    }
+
     public GetPublicationsForPersonRequest() {
     }
 }

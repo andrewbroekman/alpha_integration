@@ -156,7 +156,14 @@ public class PublicationMock extends BaseMock implements IPublication {
     public GetPublicationsForPersonResponse getPublicationsForPerson(GetPublicationsForPersonRequest getPublicationsForPersonRequest) throws RequestNotValidException {
 
         serviceValidationUtilities.validateRequest(GetPublicationsForPersonRequest.class, getPublicationsForPersonRequest);
-        return null;
+        if(getPublicationsForPersonRequest.getPerson() < 0)
+            throw new RequestNotValidException();
+
+        if(getPublicationsForPersonRequest.getPerson() != 111)
+            return new GetPublicationsForPersonResponse(); //no responses
+        GetPublicationsForPersonResponse resp = new GetPublicationsForPersonResponse();
+        resp.addPublication(createNormalPublication());
+        return resp;
     }
 
     @Override
