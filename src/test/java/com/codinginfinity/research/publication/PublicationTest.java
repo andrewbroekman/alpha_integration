@@ -6,8 +6,10 @@ import com.codinginfinity.research.publication.exception.GroupDoesNotExist;
 import com.codinginfinity.research.publication.exception.PersonDoesNotExist;
 import com.codinginfinity.research.publication.request.CalcAccreditationPointsForGroupRequest;
 import com.codinginfinity.research.publication.request.CalcAccreditationPointsForPersonRequest;
+import com.codinginfinity.research.publication.request.GetPublicationsForPersonRequest;
 import com.codinginfinity.research.publication.response.CalcAccreditationPointsForGroupResponse;
 import com.codinginfinity.research.publication.response.CalcAccreditationPointsForPersonResponse;
+import com.codinginfinity.research.publication.response.GetPublicationsForPersonResponse;
 import com.codinginfinity.research.services.RequestNotValidException;
 
 import org.junit.Test;
@@ -73,6 +75,36 @@ public class PublicationTest {
         CalcAccreditationPointsForGroupRequest req = new CalcAccreditationPointsForGroupRequest(222, new Period(createOlderDate(), createNewerDate()));
         CalcAccreditationPointsForGroupResponse resp = publicationMock.calcAccreditationPointsForGroup(req);
         assert resp.getPoints() == 26;
+    }
+
+    //getPublicationsForPerson
+    @Test(expected = RequestNotValidException.class)
+    public void getPublicationsForInvalidPerson() throws RequestNotValidException{
+        GetPublicationsForPersonRequest req = new GetPublicationsForPersonRequest();
+        req.setConfidenceLevel(PublicationConfidenceLevel.ACCEPTED);
+        req.setPerson(-1);
+        req.setPublicationPeriod(new Period(createOlderDate(), createNewerDate()));
+        publicationMock.getPublicationsForPerson(req);
+    }
+
+    @Test
+    public void getPublicationsForNonExistentPerson() throws RequestNotValidException{
+        GetPublicationsForPersonRequest req = new GetPublicationsForPersonRequest();
+        req.setConfidenceLevel(PublicationConfidenceLevel.ACCEPTED);
+        req.setPerson(6);
+        req.setPublicationPeriod(new Period(createOlderDate(), createNewerDate()));
+        GetPublicationsForPersonResponse resp = publicationMock.getPublicationsForPerson(req);
+        assert resp.getMatchingPublications().size() == 0;
+    }
+
+    @Test
+    public void getPublicationsForNormalPerson() throws RequestNotValidException{
+        GetPublicationsForPersonRequest req = new GetPublicationsForPersonRequest();
+        req.setConfidenceLevel(PublicationConfidenceLevel.ACCEPTED);
+        req.setPerson(111);
+        req.setPublicationPeriod(new Period(createOlderDate(), createNewerDate()));
+        GetPublicationsForPersonResponse resp = publicationMock.getPublicationsForPerson(req);
+        assert resp.getMatchingPublications().size() == 1 && resp.getMatchingPublications().get(0).getId() == 174;
     }
 
     public Date createOlderDate(){

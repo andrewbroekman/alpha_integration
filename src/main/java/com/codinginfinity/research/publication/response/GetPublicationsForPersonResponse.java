@@ -22,4 +22,8 @@ public class GetPublicationsForPersonResponse implements Response {
     public void addPublication(Publication publication){
         matchingPublications.add(publication);
     }
+
+    public List<Publication> getMatchingPublications(){
+        return matchingPublications;
+    }
 }
