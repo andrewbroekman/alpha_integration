@@ -1,9 +1,11 @@
 package com.codinginfinity.research.publication;
 
 
+import com.codinginfinity.research.publication.exception.PublicationWithTitleExistsForAuthorsException;
 import com.codinginfinity.research.publication.lifecycle.InProgress;
 import com.codinginfinity.research.publication.exception.GroupDoesNotExist;
 import com.codinginfinity.research.publication.exception.PersonDoesNotExist;
+import com.codinginfinity.research.publication.request.AddPublicationRequest;
 import com.codinginfinity.research.publication.request.CalcAccreditationPointsForGroupRequest;
 import com.codinginfinity.research.publication.request.CalcAccreditationPointsForPersonRequest;
 import com.codinginfinity.research.publication.request.GetPublicationsForPersonRequest;
@@ -36,6 +38,25 @@ public class PublicationTest {
 
     @Inject
     IPublication publicationMock;
+
+    //AddPublication
+    @Test
+    public void addPublicationValidRequest() throws RequestNotValidException, PublicationWithTitleExistsForAuthorsException {
+        AddPublicationRequest req = new AddPublicationRequest();
+        req.setInitialState(createPublicationMock().getStateEntries().get(0));
+        publicationMock.addPublication(req);
+        assert true;
+    }
+
+    @Test(expected = PublicationWithTitleExistsForAuthorsException.class)
+    public void addPublicationWhenTitleExistsForAuthor() throws RequestNotValidException, PublicationWithTitleExistsForAuthorsException{
+        AddPublicationRequest req = new AddPublicationRequest();
+        PublicationState state = createPublicationMock().getStateEntries().get(0);
+        state.setOwner(3);
+        req.setInitialState(state);
+        publicationMock.addPublication(req);
+    }
+
 
     //calcAccreditationPointsForPerson
     @Test(expected = RequestNotValidException.class)
@@ -137,7 +158,7 @@ public class PublicationTest {
         //String title, LocalDate envisagedPublicationDate
         PublicationDetails details = new PublicationDetails("A Guided Approach to Agile Software Engineering", LocalDate.now());
         //LocalDate date, String reason, PublicationDetails publicationDetails, LifeCycleState lifeCycleState, long publicationTarget, long publicationType, long owner
-        PublicationState state = new PublicationState(LocalDate.now(), "FOMO on YOLO", details, new InProgress(), 1, 1, 3);
+        PublicationState state = new PublicationState(LocalDate.now(), "FOMO on YOLO", details, new InProgress(), 1, 1, 1);
         Publication p = new Publication(state);
         return p;
     }
