@@ -110,13 +110,13 @@ public class PublicationMock extends BaseMock implements IPublication {
 
         serviceValidationUtilities.validateRequest(AddPublicationTypeRequest.class, addPublicationTypeRequest);
 
-        if (addPublicationTypeRequest.getNewPublicationType().getName().toLowerCase().equals("e-journal"))
+        if (addPublicationTypeRequest.getNewPublicationType().toLowerCase().equals("e-journal"))
             throw new PublicationTypeExistsException();
 
         Active active = new Active(((Active)(addPublicationTypeRequest.getStateEntry())).getAccreditationPoints());
         active.setId(45);
 
-        PublicationType publicationType = new PublicationType(addPublicationTypeRequest.getNewPublicationType().getName(), active);
+        PublicationType publicationType = new PublicationType(addPublicationTypeRequest.getNewPublicationType(), active);
         publicationType.setId(89);
 
         return new AddPublicationTypeResponse(publicationType);

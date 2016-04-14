@@ -14,17 +14,19 @@ public class AddPublicationTypeRequest implements Request {
 
     private static final long serialVersionUID = 2133483889995619156L;
 
-    private PublicationType newPublicationType;
+    private String newPublicationType;
     private List<PublicationTypeState> stateEntry;
 
-    public AddPublicationTypeRequest() {
+    public AddPublicationTypeRequest(String newPublicationType)
+    {
+        this.newPublicationType = newPublicationType;
     }
 
-    public PublicationType getNewPublicationType() {
+    public String getNewPublicationType() {
         return newPublicationType;
     }
 
-    public void setNewPublicationType(PublicationType newPublicationType) {
+    public void setNewPublicationType(String newPublicationType) {
         this.newPublicationType = newPublicationType;
     }
 
@@ -36,7 +38,7 @@ public class AddPublicationTypeRequest implements Request {
         stateEntry.add(entry);
     }
 
-    public PublicationTypeState getStateEntry() {
-        return stateEntry.get(stateEntry.size()-1);
+    public List<PublicationTypeState> getStateEntry() {
+        return stateEntry;
     }
 }

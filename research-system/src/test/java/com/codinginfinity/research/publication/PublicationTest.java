@@ -3,15 +3,14 @@ package com.codinginfinity.research.publication;
 
 import com.codinginfinity.research.publication.exception.GroupDoesNotExist;
 import com.codinginfinity.research.publication.exception.PersonDoesNotExist;
+import com.codinginfinity.research.publication.exception.PublicationTypeExistsException;
 import com.codinginfinity.research.publication.exception.PublicationWithTitleExistsForAuthorsException;
 import com.codinginfinity.research.publication.lifecycle.InProgress;
-import com.codinginfinity.research.publication.request.AddPublicationRequest;
-import com.codinginfinity.research.publication.request.CalcAccreditationPointsForGroupRequest;
-import com.codinginfinity.research.publication.request.CalcAccreditationPointsForPersonRequest;
-import com.codinginfinity.research.publication.request.GetPublicationsForPersonRequest;
-import com.codinginfinity.research.publication.response.CalcAccreditationPointsForGroupResponse;
-import com.codinginfinity.research.publication.response.CalcAccreditationPointsForPersonResponse;
-import com.codinginfinity.research.publication.response.GetPublicationsForPersonResponse;
+import com.codinginfinity.research.publication.request.*;
+import com.codinginfinity.research.publication.response.*;
+import com.codinginfinity.research.publication.type.PublicationType;
+import com.codinginfinity.research.publication.type.PublicationTypeState;
+import com.codinginfinity.research.publication.type.exception.PublicationTypeDoesntExist;
 import com.codinginfinity.research.services.RequestNotValidException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.inject.Inject;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.Date;
 
 
@@ -31,7 +31,7 @@ import java.util.Date;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PublicationTest.class})
 @ComponentScan("com.codinginfinity.research")
-@Ignore
+
 public class PublicationTest {
 
     @Inject
@@ -124,6 +124,34 @@ public class PublicationTest {
         req.setPublicationPeriod(new Period(createOlderDate(), createNewerDate()));
         GetPublicationsForPersonResponse resp = publicationMock.getPublicationsForPerson(req);
         assert resp.getMatchingPublications().size() == 1 && resp.getMatchingPublications().get(0).getId() == 174;
+    }
+
+    //AddPublicationType
+    @Test
+    public void addPublicationTypeForNormalType() throws RequestNotValidException, PublicationTypeExistsException {
+        AddPublicationTypeRequest req = new AddPublicationTypeRequest("e-book");
+        PublicationTypeState p = new PublicationTypeState(LocalDate.of(2016, Month.APRIL, 14));
+        p.setId(76);
+        req.addStateEntry(p);
+        AddPublicationTypeResponse resp = publicationMock.addPublicationType(req);
+        assert true;
+    }
+
+    @Test (expected = PublicationTypeExistsException.class)
+    public void addPublicationTypeForExistingType() throws RequestNotValidException, PublicationTypeExistsException{
+        AddPublicationTypeRequest req = new AddPublicationTypeRequest("e-journal");
+        PublicationTypeState p = new PublicationTypeState(LocalDate.of(2016, Month.APRIL, 14));
+        p.setId(25);
+        req.addStateEntry(p);
+        AddPublicationTypeResponse resp = publicationMock.addPublicationType(req);
+    }
+
+    //GetPublicationType
+    @Test
+    public void getPublicationTypeForNormalType() throws RequestNotValidException, PublicationTypeDoesntExist {
+        GetPublicationTypeRequest req = new GetPublicationTypeRequest();
+        GetPublicationTypeResponse resp = publicationMock.getPublicationType(req);
+        assert resp.equals("e-journal");
     }
 
     public Date createOlderDate(){
