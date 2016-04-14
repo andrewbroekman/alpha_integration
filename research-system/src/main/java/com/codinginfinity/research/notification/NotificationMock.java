@@ -16,6 +16,8 @@ import com.codinginfinity.research.people.Person;
 import com.codinginfinity.research.people.response.EditPersonDetailsResponse;
 import com.codinginfinity.research.publication.Publication;
 import com.codinginfinity.research.publication.PublicationDetails;
+import com.codinginfinity.research.reporting.ReportingMock;
+import com.codinginfinity.research.reporting.request.GetProgressReportRequest;
 import com.codinginfinity.research.services.RequestNotValidException;
 import com.codinginfinity.research.services.mocking.BaseMock;
 import com.codinginfinity.research.services.mocking.Mock;
@@ -24,10 +26,7 @@ import org.springframework.stereotype.Service;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.mail.Message;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -67,11 +66,12 @@ public class NotificationMock extends BaseMock implements INotification {
             PublicationDetails pub = new PublicationDetails("Neural networks paper", LocalDate.parse("2016-08-15",
                     DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-            String subjectLine = "Activity on " + pub.getTitle() + "(" + LocalDateTime.now() +")";
-            sendEmail(p.getFirstName() + " " + p.getSurname(), p.getPrimaryEmail().getAddress(),
-                    subjectLine,"Testing message");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            String subjectLine = "Activity on " + pub.getTitle() + " (" + LocalDateTime.now().format(formatter) +")";
 
-            return new SendActivityNotificationResponse();
+            return new SendActivityNotificationResponse( sendEmail(
+                    p.getFirstName() + " " + p.getSurname(), p.getPrimaryEmail().getAddress(),
+                    subjectLine,"Testing formatting"));
         }
 
     }
@@ -88,8 +88,15 @@ public class NotificationMock extends BaseMock implements INotification {
             throw new SendEmailFailedException();
         else
         {
-            // SendEmail
-            return new SendReportNotificationResponse();
+//            Person p = new Person("Claudio", "Da Silva", new EmailAddress("c.m.dasilva@live.co.za"));
+//            ReportingMock report = new ReportingMock();
+//
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//            String subjectLine = "Report as of " + "(" + LocalDateTime.now().format(formatter) +")";
+//
+//            return new SendReportNotificationResponse(sendEmail(
+//                    p.getFirstName() + " " + p.getSurname(), p.getPrimaryEmail().getAddress(),
+//                    subjectLine,report.getProgressReportResponse(new GetProgressReportRequest()).getReportString()));
         }
 
     }
@@ -107,7 +114,7 @@ public class NotificationMock extends BaseMock implements INotification {
         else
         {
             // SendEmail
-            return new SendBroadcastNotificationResponse();
+            return new SendBroadcastNotificationResponse(false);
         }
 
     }
@@ -125,7 +132,7 @@ public class NotificationMock extends BaseMock implements INotification {
         else
         {
             // SendEmail
-            return new SendReminderResponse();
+            return new SendReminderResponse(false);
         }
 
     }
@@ -155,23 +162,27 @@ public class NotificationMock extends BaseMock implements INotification {
             message.setFrom(new InternetAddress(mailFrom));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
             message.setSubject(subject);
-            message.setContent(message, "text/html; charset=utf-8");
-            message.setSentDate(new Date());
+            message.setText(body);
+//            message.setContent(message, "text/html; charset=utf-8");
+//            message.setSentDate(new Date());
 
             Transport.send(message);
 
         }
         catch (AddressException e)
         {
+            System.out.println(e.getMessage());
             return false;
         }
-        catch (javax.mail.MessagingException e)
+        catch (MessagingException e)
         {
+            System.out.println(e.getMessage());
             return false;
         }
         catch (Exception e)
         {
             System.out.println(e.getMessage());
+            return false;
         }
 
         return true;

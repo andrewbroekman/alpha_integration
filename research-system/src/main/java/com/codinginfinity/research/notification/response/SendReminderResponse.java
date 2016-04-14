@@ -13,17 +13,17 @@ public class SendReminderResponse implements Response {
     private static final long serialVersionUID = -3822763195673461747L;
 
     @NotNull
-    private ReminderRequest reminderRequest;
+    private boolean success;
 
-    public ReminderRequest getReminderRequest() {
-
-        return reminderRequest;
-
+    public SendReminderResponse(boolean success) {
+        this.success = success;
     }
 
-    public void setReminderRequest(ReminderRequest reminderRequest) {
+    public boolean isSuccess() {
+        return success;
+    }
 
-        this.reminderRequest = reminderRequest;
-
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 }
