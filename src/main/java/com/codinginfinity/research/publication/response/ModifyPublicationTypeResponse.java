@@ -8,4 +8,21 @@ import com.codinginfinity.research.services.Response;
 public class ModifyPublicationTypeResponse implements Response {
 
     private static final long serialVersionUID = -7760066394413961053L;
+
+    private long id;
+
+    public ModifyPublicationTypeResponse() {
+    }
+
+    public ModifyPublicationTypeResponse(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

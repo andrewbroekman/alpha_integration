@@ -16,5 +16,24 @@ public class ModifyPublicationTypeRequest implements Request {
     public ModifyPublicationTypeRequest() {
     }
 
+    public ModifyPublicationTypeRequest(PublicationTypeState publicationTypeState, long modifiedPublicationType) {
+        this.publicationTypeState = publicationTypeState;
+        this.modifiedPublicationType = modifiedPublicationType;
+    }
 
+    public PublicationTypeState getPublicationTypeState() {
+        return publicationTypeState;
+    }
+
+    public void setPublicationTypeState(PublicationTypeState publicationTypeState) {
+        this.publicationTypeState = publicationTypeState;
+    }
+
+    public long getModifiedPublicationType() {
+        return modifiedPublicationType;
+    }
+
+    public void setModifiedPublicationType(long modifiedPublicationType) {
+        this.modifiedPublicationType = modifiedPublicationType;
+    }
 }

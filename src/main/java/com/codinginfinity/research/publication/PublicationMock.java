@@ -8,6 +8,7 @@ import com.codinginfinity.research.publication.request.*;
 import com.codinginfinity.research.publication.response.*;
 import com.codinginfinity.research.publication.type.Active;
 import com.codinginfinity.research.publication.type.PublicationType;
+import com.codinginfinity.research.publication.type.PublicationTypeState;
 import com.codinginfinity.research.publication.type.exception.PublicationTypeDoesntExist;
 import com.codinginfinity.research.services.RequestNotValidException;
 import com.codinginfinity.research.services.mocking.BaseMock;
@@ -151,7 +152,16 @@ public class PublicationMock extends BaseMock implements IPublication {
     public ModifyPublicationTypeResponse modifyPublicationType(ModifyPublicationTypeRequest modifyPublicationTypeRequest) throws RequestNotValidException {
 
         serviceValidationUtilities.validateRequest(ModifyPublicationTypeRequest.class, modifyPublicationTypeRequest);
-        return null;
+
+        PublicationType publicationType = createNormalPublicationType();
+
+        int lastStateEntry = publicationType.getStateEntry().size() - 1;
+        if (modifyPublicationTypeRequest.getPublicationTypeState().getEffectiveDate().isBefore(publicationType.getStateEntry().get(lastStateEntry).getEffectiveDate()))
+            throw new RequestNotValidException();
+
+        publicationType.addStateEntry(modifyPublicationTypeRequest.getPublicationTypeState());
+
+        return new ModifyPublicationTypeResponse(publicationType.getId());
     }
 
     @Override
@@ -196,6 +206,18 @@ public class PublicationMock extends BaseMock implements IPublication {
         publicationDetails.setId(55);
 
         return new PublicationState(LocalDate.of(2017, Month.APRIL, 1), "Have a new idea", publicationDetails, new InProgress(0), 4, 2, 3);
+    }
+
+    private static PublicationType createNormalPublicationType() {
+
+        Active active = new Active(5.5);
+        active.setEffectiveDate(LocalDate.of(2016, Month.APRIL, 14));
+        active.setId(23);
+
+        PublicationType publicationType = new PublicationType("e-journal", active);
+        publicationType.setId(412);
+
+        return publicationType;
     }
 
 
