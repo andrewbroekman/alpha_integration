@@ -23,6 +23,11 @@ public class PublicationType extends BaseEntity {
         addStateEntry(stateEntry);
     }
 
+    public PublicationType(String name, List<PublicationTypeState> stateEntrys) {
+        this.name = name;
+        stateEntry = stateEntrys;
+    }
+
     public String getName() {
         return name;
     }
