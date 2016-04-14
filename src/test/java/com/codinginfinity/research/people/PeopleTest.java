@@ -145,14 +145,14 @@ public class PeopleTest {
 
     @Test
     public void addResearchGroup() throws Exception{
-        peopleMock.setState(PeopleMock.State.invalidResearchGroup);
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
         Group g = createCirg();
         AddResearchGroupRequest req = new AddResearchGroupRequest(g);
         AddResearchGroupResponse resp = peopleMock.addResearchGroup(req);
         assert true;
     }
 
-    @Test(expected = RequestNotValidException.class)
+    @Test(expected = ResearchGroupAlreadyExists.class)
     public void addResearchGroupInvalidRequest() throws Exception{
         peopleMock.setState(PeopleMock.State.invalidResearchGroup);
         Group g = createCirg();
@@ -163,14 +163,14 @@ public class PeopleTest {
 
     @Test
     public void suspendResearchGroup() throws Exception{
-        peopleMock.setState(PeopleMock.State.researchGroupAlreadySuspended);
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
         Group g = createCirg();
         SuspendResearchGroupRequest req = new SuspendResearchGroupRequest(g);
         peopleMock.suspendResearchGroup(req);
         assert true;
     }
 
-    @Test(expected = RequestNotValidException.class)
+    @Test(expected = ResearchGroupAlreadySuspended.class)
     public void suspendResearchGroupInvalidRequest() throws Exception{
         peopleMock.setState(PeopleMock.State.researchGroupAlreadySuspended);
         Group g = createCirg();

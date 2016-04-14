@@ -141,7 +141,7 @@ public class PeopleMock extends BaseMock implements IPeople {
         }
 
         if(suspendResearchGroupRequest.getGroup().getName().equals("CIRG") &&
-                !suspendResearchGroupRequest.getGroup().isActive()){
+                suspendResearchGroupRequest.getGroup().isActive()){
             return new SuspendResearchGroupResponse(suspendResearchGroupRequest.getGroup());
         }else{
             throw new RequestNotValidException();
