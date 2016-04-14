@@ -43,6 +43,7 @@ import java.util.Properties;
  */
 @Stateless
 @Service
+@SuppressWarnings("Duplicates")
 public class NotificationMock extends BaseMock implements INotification {
 
     @Inject
@@ -98,7 +99,6 @@ public class NotificationMock extends BaseMock implements INotification {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             String subjectLine = "Report as of " + "(" + LocalDateTime.now().format(formatter) +")";
             String svgXML = report.getProgressReportResponse(new GetProgressReportRequest()).getResponseString();
-            System.out.println(svgXML);
 
             return new SendReportNotificationResponse(sendEmail(
                     p.getFirstName() + " " + p.getSurname(), p.getPrimaryEmail().getAddress(),
