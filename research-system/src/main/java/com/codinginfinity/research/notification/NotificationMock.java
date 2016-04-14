@@ -33,6 +33,7 @@ import javax.mail.internet.MimeMessage;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 
@@ -43,6 +44,9 @@ import java.util.Properties;
 @Stateless
 @Service
 public class NotificationMock extends BaseMock implements INotification {
+
+    @Inject
+    private ReportingMock reportingMock;
 
     public NotificationMock() {
 
@@ -62,7 +66,7 @@ public class NotificationMock extends BaseMock implements INotification {
             throw new SendEmailFailedException();
         else
         {
-            Person p = new Person("Claudio", "Da Silva", new EmailAddress("c.m.dasilva@live.co.za"));
+            Person p = new Person("Claudio", "Da Silva", new EmailAddress("alphaintegrationteam@gmail.com"));
             PublicationDetails pub = new PublicationDetails("Neural networks paper", LocalDate.parse("2016-08-15",
                     DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
@@ -71,7 +75,7 @@ public class NotificationMock extends BaseMock implements INotification {
 
             return new SendActivityNotificationResponse( sendEmail(
                     p.getFirstName() + " " + p.getSurname(), p.getPrimaryEmail().getAddress(),
-                    subjectLine,"Testing formatting"));
+                    subjectLine,createBody("Activity update","Stuff changed")));
         }
 
     }
@@ -88,18 +92,18 @@ public class NotificationMock extends BaseMock implements INotification {
             throw new SendEmailFailedException();
         else
         {
-            Person p = new Person("Claudio", "Da Silva", new EmailAddress("c.m.dasilva@live.co.za"));
+            Person p = new Person("Claudio", "Da Silva", new EmailAddress("alphaintegrationteam@gmail.com"));
             ReportingMock report = new ReportingMock();
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             String subjectLine = "Report as of " + "(" + LocalDateTime.now().format(formatter) +")";
             String svgXML = report.getProgressReportResponse(new GetProgressReportRequest()).getReportString();
-//
-//            return new SendReportNotificationResponse(sendEmail(
-//                    p.getFirstName() + " " + p.getSurname(), p.getPrimaryEmail().getAddress(),
-//                    subjectLine, svgXML));
 
-            return new SendReportNotificationResponse(false);
+            return new SendReportNotificationResponse(sendEmail(
+                    p.getFirstName() + " " + p.getSurname(), p.getPrimaryEmail().getAddress(),
+                    subjectLine,
+                    createBody( "Report",
+                            reportingMock.getProgressReportResponse(new GetProgressReportRequest()).getReportString() )));
         }
 
     }
@@ -116,15 +120,23 @@ public class NotificationMock extends BaseMock implements INotification {
             throw new SendEmailFailedException();
         else
         {
-            Person p = new Person("Claudio", "Da Silva", new EmailAddress("c.m.dasilva@live.co.za"));
+            Person p = new Person("Claudio", "Da Silva", new EmailAddress("alphaintegrationteam@gmail.com"));
+
+            ArrayList<Person> pList = new ArrayList<Person>();
+            pList.add(new Person( "Andrew", "Broekman", new EmailAddress("alphaintegrationteam@gmail.com") ) );
+            pList.add(new Person( "Reinhardt", "Cromhout", new EmailAddress("alphaintegrationteam@gmail.com") ) );
+            pList.add(new Person( "Rohan", "Chhipa", new EmailAddress("alphaintegrationteam@gmail.com") ) );
+            pList.add(new Person( "Fabio", "Loreggian", new EmailAddress("alphaintegrationteam@gmail.com") ) );
+            pList.add(new Person( "Brenton", "Watt", new EmailAddress("alphaintegrationteam@gmail.com") ) );
+
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             String subjectLine = "Broadcast from " + p.getFirstName() + " " + p.getSurname() + " <" +
                     p.getPrimaryEmail().getAddress() + "> on (" + LocalDateTime.now().format(formatter) +")";
 
             return new SendBroadcastNotificationResponse(sendEmail(
-                    p.getFirstName() + " " + p.getSurname(), p.getPrimaryEmail().getAddress(),
-                    subjectLine, "This was a broadcast"));
+                    p.getFirstName() + " " + p.getSurname(), subjectLine,
+                    sendBroadcastNotificationRequest.getBroadcastNotificationRequest().getMessage(), pList));
         }
 
     }
@@ -141,14 +153,15 @@ public class NotificationMock extends BaseMock implements INotification {
             throw new SendEmailFailedException();
         else
         {
-            Person p = new Person("Claudio", "Da Silva", new EmailAddress("c.m.dasilva@live.co.za"));
+            Person p = new Person("Claudio", "Da Silva", new EmailAddress("alphaintegrationteam@gmail.com"));
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             String subjectLine = "Reminder request for (" + LocalDateTime.now().format(formatter) +")";
 
             return new SendReminderResponse(sendEmail(
                     p.getFirstName() + " " + p.getSurname(), p.getPrimaryEmail().getAddress(),
-                    subjectLine, "This is a reminder"));
+                    subjectLine,
+                    createBody("Reminder request",sendReminderRequest.getReminderRequest().getMessage() )));
         }
 
     }
@@ -178,9 +191,7 @@ public class NotificationMock extends BaseMock implements INotification {
             message.setFrom(new InternetAddress(mailFrom));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
             message.setSubject(subject);
-            message.setText(body);
-//            message.setContent(message, "text/html; charset=utf-8");
-//            message.setSentDate(new Date());
+            message.setContent(body, "text/html; charset=utf-8");
 
             Transport.send(message);
 
@@ -202,6 +213,26 @@ public class NotificationMock extends BaseMock implements INotification {
         }
 
         return true;
+    }
+
+    public boolean sendEmail(String name, String subject, String body, ArrayList<Person> pList)
+    {
+        boolean success = false;
+
+        while ( !pList.isEmpty() )
+        {
+            Person p = pList.remove(0);
+            sendEmail(name, p.getPrimaryEmail().getAddress(), subject, createBody("Broadcast notification", body) );
+        }
+
+        return success;
+    }
+
+    public String createBody(String type, String body)
+    {
+        return "<h1 style=\"background-color: #CCCCCC; border: 2px solid #003366; padding: 10px; margin-bottom: 50px;\">CS Research Management System</h1>" +
+                "<h2 style=\"margin-bottom: 50px;\">" + type + "</h2>" + body + "<div style=\"margin-top: 50px;\">" +
+                "<strong><p>Kind regards</p><p>The CS Team</p><a href=\"www.cs.up.ac.za\">www.cs.up.ac.za</a></strong></div>";
     }
 
     public enum State implements Mock.State{externalRequirementsMet, EmailInvalidException, InvalidDateException, SendEmailFailedException}
