@@ -36,7 +36,7 @@ public class NotificationMock extends BaseMock implements INotification {
 
     @Override
     public SendActivityNotificationResponse sendActivityNotification(SendActivityNotificationRequest sendActivityNotificationRequest)
-            throws RequestNotValidException, EmailInvalidException, SendEmailFailedException {
+            throws RequestNotValidException, EmailInvalidException, SendEmailFailedException, InvalidDateException {
 
         serviceValidationUtilities.validateRequest(SendActivityNotificationRequest.class, sendActivityNotificationRequest);
 
@@ -59,7 +59,7 @@ public class NotificationMock extends BaseMock implements INotification {
         if(getState() == State.EmailInvalidException)
             throw new EmailInvalidException();
         else if (getState() == State.InvalidDateException)
-            throw new SendEmailFailedException();
+            throw new InvalidDateException();
         else if (getState() == State.SendEmailFailedException)
             throw new SendEmailFailedException();
         else
@@ -77,7 +77,7 @@ public class NotificationMock extends BaseMock implements INotification {
         if(getState() == State.EmailInvalidException)
             throw new EmailInvalidException();
         else if (getState() == State.InvalidDateException)
-            throw new SendEmailFailedException();
+            throw new InvalidDateException();
         else if (getState() == State.SendEmailFailedException)
             throw new SendEmailFailedException();
         else
