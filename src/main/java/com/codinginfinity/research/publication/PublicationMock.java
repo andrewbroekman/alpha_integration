@@ -99,7 +99,14 @@ public class PublicationMock extends BaseMock implements IPublication {
             throw new PublicationDoesntExist();
 
         Publication publication = createNormalPublication();
+
+        assert publication.getStateEntries().size() == 1;
+
         publication.addStateEntry(changePublicationStateRequest.getPublicationToModify());
+
+        assert publication.getStateEntries().size() == 2;
+        assert publication.getStateEntries().get(0).getDate().isBefore(publication.getStateEntries().get(1).getDate());
+
         return new ChangePublicationStateResponse(changePublicationStateRequest.getModifiedPublication(), publication);
     }
 
