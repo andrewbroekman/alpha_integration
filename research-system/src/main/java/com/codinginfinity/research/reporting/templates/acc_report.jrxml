@@ -28,7 +28,7 @@
     <band height="60" splitType="Stretch">
       <image>
         <reportElement x="615" y="0" width="180" height="50" uuid="7836ad5d-91c8-428c-87ca-a1a8b2b8b137"/>
-        <imageExpression><![CDATA["logo.jpg"]]></imageExpression>
+        <imageExpression><![CDATA[]]></imageExpression>
       </image>
       <staticText>
         <reportElement style="Title" x="0" y="10" width="380" height="50" uuid="a080d2ca-6207-4d8e-87c9-d3b61fb495a9"/>
