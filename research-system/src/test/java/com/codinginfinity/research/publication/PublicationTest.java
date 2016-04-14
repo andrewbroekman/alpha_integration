@@ -238,6 +238,22 @@ public class PublicationTest {
         GetPublicationTypeResponse resp = publicationMock.getPublicationType(req);
     }
 
+    //modifyPublicationType
+    @Test
+    public void modifyPublicationTypeForNormalPublicationType() throws RequestNotValidException {
+        PublicationTypeState p = new PublicationTypeState(LocalDate.of(2016, Month.APRIL, 14));
+        ModifyPublicationTypeRequest req = new ModifyPublicationTypeRequest(p,412);
+        ModifyPublicationTypeResponse resp = publicationMock.modifyPublicationType(req);
+        assert resp.getId() == 412;
+    }
+
+    @Test(expected = RequestNotValidException.class)
+    public void modifyPublicationTypeForInvalidPublicationType() throws RequestNotValidException {
+        PublicationTypeState p = new PublicationTypeState(LocalDate.of(2016, Month.APRIL, 12));
+        ModifyPublicationTypeRequest req = new ModifyPublicationTypeRequest(p,412);
+        ModifyPublicationTypeResponse resp = publicationMock.modifyPublicationType(req);
+    }
+
     public Date createOlderDate(){
         SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
         String input = "2010-10-21";
