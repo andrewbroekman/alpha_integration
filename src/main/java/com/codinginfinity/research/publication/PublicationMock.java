@@ -170,7 +170,15 @@ public class PublicationMock extends BaseMock implements IPublication {
     public GetPublicationsForGroupResponse getPublicationsForGroup(GetPublicationsForGroupRequest getPublicationsForGroupRequest) throws RequestNotValidException {
 
         serviceValidationUtilities.validateRequest(GetPublicationsForGroupRequest.class, getPublicationsForGroupRequest);
-        return null;
+        if(getPublicationsForGroupRequest.getGroup() < 0)
+            throw new RequestNotValidException();
+
+        if(getPublicationsForGroupRequest.getGroup() != 222)
+            return new GetPublicationsForGroupResponse();
+
+        GetPublicationsForGroupResponse resp = new GetPublicationsForGroupResponse();
+        resp.addPublication(createNormalPublication());
+        return resp;
     }
 
     @Override
