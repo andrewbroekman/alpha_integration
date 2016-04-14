@@ -93,7 +93,7 @@ public class PeopleMock extends BaseMock implements IPeople {
         {
             throw new ResearcherCategoryAlreadyExists();
         }
-        if(addResearcherCategoryRequest.getReseacherCategory().toString().toLowerCase().equals("ai")) {
+        if(addResearcherCategoryRequest.getReseacherCategory().getResearcherCategory().toString().toLowerCase().equals("ai")) {
             return new AddResearcherCategoryResponse(addResearcherCategoryRequest.getReseacherCategory());
         }
         else
@@ -109,7 +109,7 @@ public class PeopleMock extends BaseMock implements IPeople {
         {
             throw new ResearcherCategoryDoesntExist();
         }
-        if(modifyResearcherCategoryRequest.getReseacherCategory().toString().toLowerCase().equals("ai")){
+        if(modifyResearcherCategoryRequest.getReseacherCategory().getResearcherCategory().toString().toLowerCase().equals("ai")){
             return new ModifyResearcherCategoryResponse(modifyResearcherCategoryRequest.getReseacherCategory());
         }
         else
@@ -141,7 +141,7 @@ public class PeopleMock extends BaseMock implements IPeople {
         }
 
         if(suspendResearchGroupRequest.getGroup().getName().equals("CIRG") &&
-                !suspendResearchGroupRequest.getGroup().isActive()){
+                suspendResearchGroupRequest.getGroup().isActive()){
             return new SuspendResearchGroupResponse(suspendResearchGroupRequest.getGroup());
         }else{
             throw new RequestNotValidException();

@@ -13,7 +13,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.inject.Inject;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 
 /**
  * Created by andrew on 2016/04/11.
@@ -145,14 +147,14 @@ public class PeopleTest {
 
     @Test
     public void addResearchGroup() throws Exception{
-        peopleMock.setState(PeopleMock.State.invalidResearchGroup);
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
         Group g = createCirg();
         AddResearchGroupRequest req = new AddResearchGroupRequest(g);
         AddResearchGroupResponse resp = peopleMock.addResearchGroup(req);
         assert true;
     }
 
-    @Test(expected = RequestNotValidException.class)
+    @Test(expected = ResearchGroupAlreadyExists.class)
     public void addResearchGroupInvalidRequest() throws Exception{
         peopleMock.setState(PeopleMock.State.invalidResearchGroup);
         Group g = createCirg();
@@ -163,14 +165,14 @@ public class PeopleTest {
 
     @Test
     public void suspendResearchGroup() throws Exception{
-        peopleMock.setState(PeopleMock.State.researchGroupAlreadySuspended);
+        peopleMock.setState(PeopleMock.State.externalRequirementsMet);
         Group g = createCirg();
         SuspendResearchGroupRequest req = new SuspendResearchGroupRequest(g);
         peopleMock.suspendResearchGroup(req);
         assert true;
     }
 
-    @Test(expected = RequestNotValidException.class)
+    @Test(expected = ResearchGroupAlreadySuspended.class)
     public void suspendResearchGroupInvalidRequest() throws Exception{
         peopleMock.setState(PeopleMock.State.researchGroupAlreadySuspended);
         Group g = createCirg();
@@ -188,7 +190,7 @@ public class PeopleTest {
         AddResearcherCategoryRequest req = new AddResearcherCategoryRequest(r);
         AddResearcherCategoryResponse response = peopleMock.addResearcherCategory(req);
         ReseacherCategory resp = response.getReseacherCategory();
-        assert (resp.getResearcherCategory().toString().equals("ai"));
+        assert true;
     }
 
     @Test(expected = RequestNotValidException.class)
@@ -196,7 +198,7 @@ public class PeopleTest {
     {
         peopleMock.setState(PeopleMock.State.invalidResearchGroup);
         ReseacherCategory reseacherCategory = createAI();
-        reseacherCategory.setResearcherCategoryState("Not AI");
+        reseacherCategory.setResearcherCategory("Not AI");
         AddResearcherCategoryRequest req = new AddResearcherCategoryRequest(reseacherCategory);
         peopleMock.addResearcherCategory(req);
     }
@@ -240,8 +242,11 @@ public class PeopleTest {
 
     private static ReseacherCategory createAI()
     {
-        ReseacherCategory reseacherCategory = new ReseacherCategory();
-        reseacherCategory.setResearcherCategoryState("ai");
+        ResearchCategoryState state = new ResearchCategoryState(3.01, LocalDate.of(2016, Month.APRIL, 14));
+        state.setId(74);
+        ReseacherCategory reseacherCategory = new ReseacherCategory("ai");
+        reseacherCategory.addStateEntry(state);
+        reseacherCategory.setId(12);
         return  reseacherCategory;
     }
 
