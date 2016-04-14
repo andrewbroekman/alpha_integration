@@ -1,5 +1,11 @@
 package com.codinginfinity.research.publication;
 
+import com.codinginfinity.research.notification.ActivitiesNotificationRequest;
+import com.codinginfinity.research.notification.NotificationMock;
+import com.codinginfinity.research.notification.exceptions.EmailInvalidException;
+import com.codinginfinity.research.notification.exceptions.InvalidDateException;
+import com.codinginfinity.research.notification.exceptions.SendEmailFailedException;
+import com.codinginfinity.research.notification.request.SendActivityNotificationRequest;
 import com.codinginfinity.research.publication.exception.*;
 import com.codinginfinity.research.publication.lifecycle.InProgress;
 import com.codinginfinity.research.publication.lifecycle.Published;
@@ -28,6 +34,9 @@ public class PublicationMock extends BaseMock implements IPublication {
 
     @Inject
     private ServiceValidationUtilities serviceValidationUtilities;
+
+    @Inject
+    private NotificationMock notificationMock;
 
     public enum State implements Mock.State{externalRequirementsMet,
         notAuthorized,
@@ -88,7 +97,9 @@ public class PublicationMock extends BaseMock implements IPublication {
     }
 
     @Override
-    public ChangePublicationStateResponse changePublicationState(ChangePublicationStateRequest changePublicationStateRequest) throws RequestNotValidException, PublicationDoesntExist, AlreadyPublishedException {
+    public ChangePublicationStateResponse changePublicationState(ChangePublicationStateRequest changePublicationStateRequest)
+            throws RequestNotValidException, PublicationDoesntExist, AlreadyPublishedException, InvalidDateException,
+            EmailInvalidException, SendEmailFailedException {
 
         serviceValidationUtilities.validateRequest(ChangePublicationStateRequest.class, changePublicationStateRequest);
         if (changePublicationStateRequest.getModifiedPublication() < 0)
@@ -102,6 +113,17 @@ public class PublicationMock extends BaseMock implements IPublication {
 
         Publication publication = createNormalPublication();
         publication.addStateEntry(changePublicationStateRequest.getPublicationToModify());
+
+        SendActivityNotificationRequest actReq = new SendActivityNotificationRequest();
+        ActivitiesNotificationRequest actNot = new ActivitiesNotificationRequest();
+
+        actNot.setChanges("Publication state changed for publication ");
+        actNot.setPublication(changePublicationStateRequest.getModifiedPublication());
+
+        actReq.setActivitiesNotificationRequest(actNot);
+
+        notificationMock.sendActivityNotification(actReq);
+
         return new ChangePublicationStateResponse(changePublicationStateRequest.getModifiedPublication(), publication);
     }
 
