@@ -95,7 +95,7 @@ public class NotificationMock extends BaseMock implements INotification {
         if(getState() == State.EmailInvalidException)
             throw new EmailInvalidException();
         else if (getState() == State.InvalidDateException)
-            throw new SendEmailFailedException();
+            throw new InvalidDateException();
         else if (getState() == State.SendEmailFailedException)
             throw new SendEmailFailedException();
         else

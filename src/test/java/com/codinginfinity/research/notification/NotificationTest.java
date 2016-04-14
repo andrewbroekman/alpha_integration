@@ -6,6 +6,7 @@ import com.codinginfinity.research.notification.exceptions.InvalidDateException;
 import com.codinginfinity.research.notification.exceptions.SendEmailFailedException;
 import com.codinginfinity.research.notification.request.SendActivityNotificationRequest;
 import com.codinginfinity.research.notification.request.SendBroadcastNotificationRequest;
+import com.codinginfinity.research.notification.request.SendReminderRequest;
 import com.codinginfinity.research.notification.request.SendReportNotificationRequest;
 import com.codinginfinity.research.people.EmailAddress;
 import com.codinginfinity.research.people.Person;
@@ -444,17 +445,88 @@ public class NotificationTest {
 
 
 
-//    @Test
-//    public void sendReminderTest() throws Exception{
-//
-//        notificationMock.setState(NotificationMock.State.externalRequirementsMet);
-//
-//        User u = new User();
-//        Person p = createValidEmailPerson();
-//
-//        ReminderRequest reminder = new ReminderRequest();
-//        reminder.setUser(u);
-//
-//    }
+    @Test
+    public void sendReminderTest() throws Exception{
+
+        notificationMock.setState(NotificationMock.State.externalRequirementsMet);
+
+        long u = 12345;
+        long p = 12345;
+
+        ReminderRequest reminderNot = new ReminderRequest();
+        reminderNot.setUser(u);
+        reminderNot.setMessage("Learn how to use Spring instead of outdated Glassfish");
+        LocalDateTime dt = LocalDateTime.parse("2016-04-15 12:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        reminderNot.setDate(dt);
+
+        SendReminderRequest reminderReq =  new SendReminderRequest();
+        reminderReq.setReminderRequest(reminderNot);
+
+        notificationMock.sendReminderRequest(reminderReq);
+
+    }
+
+    @Test(expected = InvalidDateException.class)
+    public void sendInvalidDateReminderTest() throws Exception{
+
+        notificationMock.setState(NotificationMock.State.InvalidDateException);
+
+        long u = 12345;
+        long p = 12345;
+
+        ReminderRequest reminderNot = new ReminderRequest();
+        reminderNot.setUser(u);
+        reminderNot.setMessage("Learn how to use Spring instead of outdated Glassfish");
+        LocalDateTime dt = LocalDateTime.parse("1995-05-02 08:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        reminderNot.setDate(dt);
+
+        SendReminderRequest reminderReq =  new SendReminderRequest();
+        reminderReq.setReminderRequest(reminderNot);
+
+        notificationMock.sendReminderRequest(reminderReq);
+
+    }
+
+    @Test(expected = EmailInvalidException.class)
+    public void sendInvalidEmailReminderTest() throws Exception{
+
+        notificationMock.setState(NotificationMock.State.EmailInvalidException);
+
+        long u = 11111;
+        long p = 12345;
+
+        ReminderRequest reminderNot = new ReminderRequest();
+        reminderNot.setUser(u);
+        reminderNot.setMessage("Learn how to use Spring instead of outdated Glassfish");
+        LocalDateTime dt = LocalDateTime.parse("2016-04-15 12:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        reminderNot.setDate(dt);
+
+        SendReminderRequest reminderReq =  new SendReminderRequest();
+        reminderReq.setReminderRequest(reminderNot);
+
+        notificationMock.sendReminderRequest(reminderReq);
+
+    }
+
+    @Test(expected = SendEmailFailedException.class)
+    public void sendFailedReminderTest() throws Exception{
+
+        notificationMock.setState(NotificationMock.State.SendEmailFailedException);
+
+        long u = 12345;
+        long p = 12345;
+
+        ReminderRequest reminderNot = new ReminderRequest();
+        reminderNot.setUser(u);
+        reminderNot.setMessage("Learn how to use Spring instead of outdated Glassfish");
+        LocalDateTime dt = LocalDateTime.parse("2016-04-15 12:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        reminderNot.setDate(dt);
+
+        SendReminderRequest reminderReq =  new SendReminderRequest();
+        reminderReq.setReminderRequest(reminderNot);
+
+        notificationMock.sendReminderRequest(reminderReq);
+
+    }
 
 }
