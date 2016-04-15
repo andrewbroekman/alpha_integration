@@ -283,7 +283,13 @@
             <artifactId>spring-tx</artifactId>
             <version>${springframework.version}</version>
         </dependency>
-
+        <!--Dependancy for Jersey -->
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+            <version>1.1.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <!-- Repository definitions -->
