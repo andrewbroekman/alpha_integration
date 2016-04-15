@@ -36,6 +36,7 @@ public class ReportingTest {
         GetAccreditationUnitReportRequest req = createAccreditationUnitReportValidRequest();
         GetAccreditationUnitReportResponse resp = reportMock.getAccreditationUnitReport(req);
 
+        assert resp != null;
         assert resp.getResponseString() != null;
         assert !resp.getResponseString().equals("");
     }
@@ -45,10 +46,31 @@ public class ReportingTest {
         GetProgressReportRequest req = new GetProgressReportRequest();
         GetProgressReportResponse resp = reportMock.getProgressReportResponse(req);
 
+        assert resp != null;
         assert resp.getResponseString() != null;
         assert !resp.getResponseString().equals("");
     }
 
+    @Test(expected = RequestNotValidException.class)
+    public void getAccreditationUnitReportInvalidRequest() throws RequestNotValidException, InvalidPeriodException {
+        reportMock.setState(ReportingMock.State.InvalidInput);
+        GetAccreditationUnitReportRequest req = createAccreditationUnitReportValidRequest();
+        reportMock.getAccreditationUnitReport(req);
+    }
+
+    @Test(expected = InvalidPeriodException.class)
+    public void getAccreditationUnitReportInvalidPeriodRequest() throws RequestNotValidException, InvalidPeriodException {
+        reportMock.setState(ReportingMock.State.InvalidPeriod);
+        GetAccreditationUnitReportRequest req = createAccreditationUnitReportValidRequest();
+        reportMock.getAccreditationUnitReport(req);
+    }
+
+    @Test(expected = RequestNotValidException.class)
+    public void getProgressReportInvalidRequest() throws RequestNotValidException {
+        reportMock.setState(ReportingMock.State.InvalidInput);
+        GetProgressReportRequest req = new GetProgressReportRequest();
+        reportMock.getProgressReportResponse(req);
+    }
 
     private GetAccreditationUnitReportRequest createAccreditationUnitReportValidRequest()
     {
