@@ -36,6 +36,5 @@ public class PeopleResource {
 		}catch(Exception e){
 			return javax.ws.rs.core.Response.status(500).build();
 		}
-		return null;
 	}	
 }
